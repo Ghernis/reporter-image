@@ -1,0 +1,113 @@
+/* Company theme: DIN Pro, principal and secondary colors */
+
+/* Place DIN Pro .woff2 / .woff / .ttf in static/fonts/ (Font Shop license) */
+@font-face {
+  font-family: "DIN Pro";
+  src: url("../fonts/DINPro.woff2") format("woff2"),
+       url("../fonts/DINPro.woff") format("woff"),
+       url("../fonts/DINPro.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "DIN Pro";
+  src: url("../fonts/DINPro-Bold.woff2") format("woff2"),
+       url("../fonts/DINPro-Bold.woff") format("woff"),
+       url("../fonts/DINPro-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* Principal: R4 G81 B228 – use with white text */
+  --color-primary: #0451e4;
+  --color-primary-rgb: 4, 81, 228;
+  --color-on-primary: #ffffff;
+
+  /* Black / white combinations */
+  --color-black: #000000;
+  --color-white: #ffffff;
+
+  /* Secondary */
+  --color-secondary-1: #009fda;
+  --color-secondary-2: #48c0b9;
+
+  --font-family: "DIN Pro", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+  font-family: var(--font-family);
+  color: var(--color-black);
+  background-color: var(--color-white);
+}
+
+/* Bulma overrides: apply primary color to hero / headers */
+.hero.is-primary,
+.button.is-primary {
+  background-color: var(--color-primary) !important;
+  color: var(--color-on-primary) !important;
+  border-color: var(--color-primary);
+}
+
+.hero.is-primary .title,
+.hero.is-primary .subtitle {
+  color: var(--color-on-primary) !important;
+}
+
+/* Secondary accents */
+a,
+.has-text-link,
+.button.is-link {
+  color: var(--color-secondary-1) !important;
+}
+
+a:hover,
+.button.is-link:hover {
+  color: var(--color-secondary-2) !important;
+}
+
+.button.is-info {
+  background-color: var(--color-secondary-1) !important;
+  border-color: var(--color-secondary-1);
+  color: var(--color-on-primary) !important;
+}
+
+.tag.is-info {
+  background-color: var(--color-secondary-2);
+  color: var(--color-white);
+}
+
+/* Title / subtitle use primary when on light background */
+.title {
+  color: var(--color-primary) !important;
+}
+
+.subtitle {
+  color: var(--color-black);
+}
+
+/* Optional: inverted block (black bg, white text) */
+.has-bg-primary {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.has-bg-primary .title,
+.has-bg-primary .subtitle,
+.has-bg-primary p {
+  color: var(--color-on-primary) !important;
+}
+
+.has-bg-black {
+  background-color: var(--color-black);
+  color: var(--color-white);
+}
+
+.has-bg-black .title,
+.has-bg-black .subtitle,
+.has-bg-black p {
+  color: var(--color-white) !important;
+}

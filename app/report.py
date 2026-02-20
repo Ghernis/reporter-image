@@ -1,20 +1,29 @@
 """
 Build HTML from Jinja2 (with optional matplotlib charts and pandas tables),
-then render to PDF via WeasyPrint.
+then render to PDF via WeasyPrint when native libs (Pango) are available.
 """
 import os
+import sys
 import tempfile
 from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
-from weasyprint import HTML, CSS
 
 
-# Paths: assume we run from /app in the container
-APP_DIR = Path(os.environ.get("APP_DIR", "/app"))
+# Paths: assume we run from /app in the container, or project root locally
+APP_DIR = Path(os.environ.get("APP_DIR", Path(__file__).resolve().parent.parent))
 TEMPLATES_DIR = APP_DIR / "templates"
 STATIC_DIR = APP_DIR / "static"
-OUTPUT_DIR = Path(os.environ.get("OUTPUT_DIR", "/output"))
+OUTPUT_DIR = Path(os.environ.get("OUTPUT_DIR", APP_DIR / "output"))
+
+
+def _weasyprint_available() -> bool:
+    """True if WeasyPrint's native libs (Pango, etc.) can be loaded."""
+    try:
+        from weasyprint import HTML  # noqa: F401
+        return True
+    except OSError:
+        return False
 
 
 def build_report(
@@ -25,10 +34,12 @@ def build_report(
     table_html: str | None = None,
     output_html_path: str | None = None,
     output_pdf_path: str | None = None,
-) -> tuple[str, str]:
+    html_only: bool = False,
+) -> tuple[str, str | None]:
     """
-    Render Jinja2 template with given data, then generate PDF with WeasyPrint.
-    Returns (path_to_html, path_to_pdf).
+    Render Jinja2 template with given data, then generate PDF with WeasyPrint if available.
+    Returns (path_to_html, path_to_pdf or None if PDF skipped).
+    On Windows without Pango, only HTML is written unless you use Docker.
     """
     env = Environment(
         loader=FileSystemLoader(str(TEMPLATES_DIR)),
@@ -47,19 +58,27 @@ def build_report(
     pdf_path = output_pdf_path or str(OUTPUT_DIR / "report.pdf")
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    # Write HTML for debugging or standalone use
     Path(html_path).parent.mkdir(parents=True, exist_ok=True)
     with open(html_path, "w", encoding="utf-8") as f:
         f.write(html_string)
 
-    # WeasyPrint: base_url so /static/... resolves to /app/static/...
-    html_doc = HTML(string=html_string, base_url=str(APP_DIR) + "/")
-    # Optional: attach print.css again for certainty (already in template)
-    print_css = STATIC_DIR / "css" / "print.css"
-    stylesheets = [CSS(filename=str(print_css))] if print_css.exists() else []
-    html_doc.write_pdf(pdf_path, stylesheets=stylesheets)
+    pdf_written: str | None = None
+    if not html_only and _weasyprint_available():
+        from weasyprint import HTML, CSS
+        html_doc = HTML(string=html_string, base_url=str(APP_DIR) + "/")
+        print_css = STATIC_DIR / "css" / "print.css"
+        stylesheets = [CSS(filename=str(print_css))] if print_css.exists() else []
+        html_doc.write_pdf(pdf_path, stylesheets=stylesheets)
+        pdf_written = pdf_path
+    elif not html_only:
+        print(
+            "PDF skipped (WeasyPrint needs Pango/GObject; not available on this system).\n"
+            "HTML written to:", html_path, "\n"
+            "To get PDF: run with Docker, or install Pango (e.g. MSYS2 on Windows).",
+            file=sys.stderr,
+        )
 
-    return html_path, pdf_path
+    return html_path, pdf_written
 
 
 def main() -> None:
@@ -81,13 +100,15 @@ def main() -> None:
         plt.close()
         chart_imgs.append(f"file://{chart_path}")
 
-    build_report(
+    html_path, pdf_path = build_report(
         title="Sample Report",
         subtitle="Generated with WeasyPrint + Jinja2 + Bulma",
         content="<p>This is a minimal report. Use <code>build_report()</code> with your own data, charts, and tables.</p>",
         chart_imgs=chart_imgs if chart_imgs else None,
     )
-    print("Report written to", OUTPUT_DIR)
+    print("HTML:", html_path)
+    if pdf_path:
+        print("PDF:", pdf_path)
 
 
 if __name__ == "__main__":

@@ -5,16 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ title | default('Report') }}</title>
   <link rel="stylesheet" href="/static/css/bulma.min.css">
+  <link rel="stylesheet" href="/static/css/theme.css">
   <link rel="stylesheet" href="/static/css/print.css">
 </head>
 <body>
+  <!-- Hero: principal color (R4 G81 B228) with white text -->
+  <section class="hero is-primary">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title is-1">{{ title | default('Report') }}</h1>
+        {% if subtitle %}
+        <p class="subtitle is-4">{{ subtitle }}</p>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+
   <section class="section">
     <div class="container">
-      <h1 class="title">{{ title | default('Report') }}</h1>
-      {% if subtitle %}
-      <p class="subtitle">{{ subtitle }}</p>
-      {% endif %}
-
       {% block content %}
       <div class="content">
         {{ content | safe if content else '' }}
@@ -30,7 +38,7 @@
       {% endif %}
 
       {% if table_html %}
-      <div class="no-break" style="margin-top: 1.5rem;">
+      <div class="no-break box" style="margin-top: 1.5rem;">
         {{ table_html | safe }}
       </div>
       {% endif %}
