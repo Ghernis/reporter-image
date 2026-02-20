@@ -1,22 +1,31 @@
-/* Company theme: DIN Pro, principal and secondary colors */
+/* Company theme: Barlow, principal and secondary colors */
 
-/* Place DIN Pro .woff2 / .woff / .ttf in static/fonts/ (Font Shop license) */
 @font-face {
-  font-family: "DIN Pro";
-  src: url("../fonts/DINPro.woff2") format("woff2"),
-       url("../fonts/DINPro.woff") format("woff"),
-       url("../fonts/DINPro.ttf") format("truetype");
+  font-family: "Barlow";
+  src: url("../fonts/Barlow.woff2") format("woff2"),
+       url("../fonts/Barlow.woff") format("woff"),
+       url("../fonts/Barlow.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "DIN Pro";
-  src: url("../fonts/DINPro-Bold.woff2") format("woff2"),
-       url("../fonts/DINPro-Bold.woff") format("woff"),
-       url("../fonts/DINPro-Bold.ttf") format("truetype");
+  font-family: "Barlow";
+  src: url("../fonts/Barlow-Bold.woff2") format("woff2"),
+       url("../fonts/Barlow-Bold.woff") format("woff"),
+       url("../fonts/Barlow-Bold.ttf") format("truetype");
   font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Barlow";
+  src: url("../fonts/Barlow-Light.woff2") format("woff2"),
+       url("../fonts/Barlow-Light.woff") format("woff"),
+       url("../fonts/Barlow-Light.ttf") format("truetype");
+  font-weight: light;
   font-style: normal;
   font-display: swap;
 }
@@ -35,7 +44,7 @@
   --color-secondary-1: #009fda;
   --color-secondary-2: #48c0b9;
 
-  --font-family: "DIN Pro", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-family: "Barlow", -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 body {
