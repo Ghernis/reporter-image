@@ -65,10 +65,17 @@ def build_report(
     pdf_written: str | None = None
     if not html_only and _weasyprint_available():
         from weasyprint import HTML, CSS
+        from weasyprint.text.fonts import FontConfiguration
+
+        font_config = FontConfiguration()
         html_doc = HTML(string=html_string, base_url=str(APP_DIR) + "/")
-        print_css = STATIC_DIR / "css" / "print.css"
-        stylesheets = [CSS(filename=str(print_css))] if print_css.exists() else []
-        html_doc.write_pdf(pdf_path, stylesheets=stylesheets)
+        # Load theme (has @font-face) and print CSS from file; font_config required for custom fonts
+        stylesheets = []
+        for name in ("theme.css", "print.css"):
+            path = STATIC_DIR / "css" / name
+            if path.exists():
+                stylesheets.append(CSS(filename=str(path), font_config=font_config))
+        html_doc.write_pdf(pdf_path, stylesheets=stylesheets, font_config=font_config)
         pdf_written = pdf_path
     elif not html_only:
         print(

@@ -1,10 +1,25 @@
 /* Company theme: Barlow, principal and secondary colors */
 
+/* Font paths: ../fonts/ relative to this CSS file (static/css/theme.css) */
+/* Normal weight: Barlow-Light first so it works with only that file */
 @font-face {
   font-family: "Barlow";
-  src: url("../fonts/Barlow.woff2") format("woff2"),
-       url("../fonts/Barlow.woff") format("woff"),
-       url("../fonts/Barlow.ttf") format("truetype");
+  src: url("../fonts/Barlow-Light.ttf") format("truetype"),
+       url("../fonts/Barlow-Light.woff2") format("woff2"),
+       url("../fonts/Barlow-Light.woff") format("woff"),
+       url("../fonts/Barlow.ttf") format("truetype"),
+       url("../fonts/Barlow.woff2") format("woff2"),
+       url("../fonts/Barlow.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Barlow";
+  src: url("../fonts/Barlow.ttf") format("truetype"),
+       url("../fonts/Barlow.woff2") format("woff2"),
+       url("../fonts/Barlow.woff") format("woff");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -12,20 +27,10 @@
 
 @font-face {
   font-family: "Barlow";
-  src: url("../fonts/Barlow-Bold.woff2") format("woff2"),
-       url("../fonts/Barlow-Bold.woff") format("woff"),
-       url("../fonts/Barlow-Bold.ttf") format("truetype");
+  src: url("../fonts/Barlow-Bold.ttf") format("truetype"),
+       url("../fonts/Barlow-Bold.woff2") format("woff2"),
+       url("../fonts/Barlow-Bold.woff") format("woff");
   font-weight: bold;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Barlow";
-  src: url("../fonts/Barlow-Light.woff2") format("woff2"),
-       url("../fonts/Barlow-Light.woff") format("woff"),
-       url("../fonts/Barlow-Light.ttf") format("truetype");
-  font-weight: light;
   font-style: normal;
   font-display: swap;
 }
@@ -47,8 +52,18 @@
   --font-family: "Barlow", -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
+body,
+body .content,
+body .title,
+body .subtitle,
+body p,
+body li,
+body td,
+body th {
+  font-family: var(--font-family) !important;
+}
+
 body {
-  font-family: var(--font-family);
   color: var(--color-black);
   background-color: var(--color-white);
 }
