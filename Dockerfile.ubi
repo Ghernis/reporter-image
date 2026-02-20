@@ -1,0 +1,27 @@
+# UBI9 + Python – work / Red Hat registry
+FROM registry.redhat.io/ubi9/python-311
+
+WORKDIR /app
+
+# WeasyPrint needs Pango; curl to download Bulma at build
+RUN dnf install -y pango curl && dnf clean all
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY app/ app/
+COPY templates/ templates/
+COPY static/ static/
+
+# Bulma CSS inside image (no CDN at runtime)
+RUN curl -sL -o /app/static/css/bulma.min.css \
+    https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css
+
+# Optional: run as non-root
+RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
+USER 1000
+
+ENV APP_DIR=/app OUTPUT_DIR=/output
+VOLUME /output
+
+CMD ["python", "-m", "app.report"]

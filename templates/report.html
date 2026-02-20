@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title | default('Report') }}</title>
+  <link rel="stylesheet" href="/static/css/bulma.min.css">
+  <link rel="stylesheet" href="/static/css/print.css">
+</head>
+<body>
+  <section class="section">
+    <div class="container">
+      <h1 class="title">{{ title | default('Report') }}</h1>
+      {% if subtitle %}
+      <p class="subtitle">{{ subtitle }}</p>
+      {% endif %}
+
+      {% block content %}
+      <div class="content">
+        {{ content | safe if content else '' }}
+      </div>
+      {% endblock %}
+
+      {% if chart_imgs %}
+      {% for img_path in chart_imgs %}
+      <figure class="chart-wrapper no-break" style="margin-top: 1.5rem;">
+        <img src="{{ img_path }}" alt="Chart" style="max-width: 100%; height: auto;">
+      </figure>
+      {% endfor %}
+      {% endif %}
+
+      {% if table_html %}
+      <div class="no-break" style="margin-top: 1.5rem;">
+        {{ table_html | safe }}
+      </div>
+      {% endif %}
+    </div>
+  </section>
+</body>
+</html>

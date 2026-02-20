@@ -1,0 +1,16 @@
+/* Print layout: A4, margins, avoid breaking figures/charts */
+@page {
+  size: A4;
+  margin: 2cm;
+}
+
+.no-break,
+.chart-wrapper,
+figure {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+h1, h2, h3 {
+  page-break-after: avoid;
+}
