@@ -21,10 +21,6 @@ COPY static/ static/
 RUN curl -sL -o /app/static/css/bulma.min.css \
     https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css
 
-# Optional: run as non-root
-RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
-USER 1000
-
 ENV APP_DIR=/app OUTPUT_DIR=/output
 VOLUME /output
 
