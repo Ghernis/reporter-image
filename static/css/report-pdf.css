@@ -1,0 +1,136 @@
+/**
+ * WeasyPrint-friendly CSS so the PDF matches the HTML report when Bulma
+ * is not fully applied (flexbox/grid quirks). Uses only simple layout and
+ * theme colors. Loaded only for PDF generation, after Bulma/theme/print.
+ */
+/* Theme colors (match theme.css) */
+:root {
+  --color-primary: #0451e4;
+  --color-on-primary: #ffffff;
+  --color-black: #000000;
+  --color-white: #ffffff;
+  --color-border: #dbdbdb;
+  --color-stripe: #f5f5f5;
+}
+
+/* Hero: full-width bar, primary background */
+.hero {
+  display: block;
+  width: 100%;
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  margin: 0 0 1.5rem 0;
+  padding: 2rem 0;
+}
+.hero-body {
+  display: block;
+  padding: 0 1rem;
+}
+.hero .title,
+.hero .subtitle {
+  color: var(--color-on-primary) !important;
+  margin: 0 0 0.25rem 0;
+}
+.hero .title.is-1 {
+  font-size: 2rem;
+  line-height: 1.2;
+}
+.hero .subtitle.is-4 {
+  font-size: 1.25rem;
+  opacity: 0.95;
+}
+
+/* Container: max-width, centered */
+.container {
+  display: block;
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Section spacing */
+.section {
+  display: block;
+  padding: 1.5rem 0;
+}
+
+/* Content block: typography */
+.content {
+  display: block;
+  margin: 0 0 1rem 0;
+}
+.content p {
+  margin: 0 0 0.75rem 0;
+  line-height: 1.5;
+}
+.content code {
+  background-color: #f5f5f5;
+  padding: 0.15em 0.4em;
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+
+/* Titles in body */
+.title.is-4 {
+  font-size: 1.25rem;
+  margin: 1.5rem 0 0.5rem 0;
+  color: var(--color-primary);
+}
+.title.is-5 {
+  font-size: 1.1rem;
+  margin: 0 0 0.5rem 0;
+}
+
+/* Box: card-like block */
+.box {
+  display: block;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 1rem;
+  margin: 1rem 0;
+  background-color: var(--color-white);
+}
+
+/* Figure / chart wrapper */
+figure.chart-wrapper {
+  display: block;
+  margin: 1rem 0;
+}
+figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+figcaption {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Tables (Bulma-like) */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.5rem 0;
+}
+.table th,
+.table td {
+  border: 1px solid var(--color-border);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+}
+.table thead th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+.table.is-striped tbody tr:nth-child(even) {
+  background-color: var(--color-stripe);
+}
+.table.is-narrow th,
+.table.is-narrow td {
+  padding: 0.35rem 0.5rem;
+}

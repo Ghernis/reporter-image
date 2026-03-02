@@ -74,9 +74,9 @@ def build_report(
 
         font_config = FontConfiguration()
         html_doc = HTML(string=html_string, base_url=str(APP_DIR) + "/")
-        # Load theme (has @font-face) and print CSS from file; font_config required for custom fonts
+        # Load Bulma first, then theme (fonts + overrides), then print + report-pdf (WeasyPrint-friendly fallback)
         stylesheets = []
-        for name in ("theme.css", "print.css"):
+        for name in ("bulma.min.css", "theme.css", "print.css", "report-pdf.css"):
             path = STATIC_DIR / "css" / name
             if path.exists():
                 stylesheets.append(CSS(filename=str(path), font_config=font_config))
