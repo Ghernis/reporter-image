@@ -1,1 +1,1 @@
-scp gherni@192.168.1.25:kode/docker/reporter/report_image/out/* C:\Users\herna\OneDrive\Documentos\kode\personal\reporter\remote\
+scp gherni@192.168.1.25:kode/docker/reporter/report_image/output/* C:\Users\herna\OneDrive\Documentos\kode\personal\reporter\remote\

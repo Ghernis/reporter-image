@@ -35,6 +35,8 @@ def build_report(
     output_html_path: str | None = None,
     output_pdf_path: str | None = None,
     html_only: bool = False,
+    template_name: str = "report.html",
+    extra_context: dict | None = None,
 ) -> tuple[str, str | None]:
     """
     Render Jinja2 template with given data, then generate PDF with WeasyPrint if available.
@@ -45,14 +47,17 @@ def build_report(
         loader=FileSystemLoader(str(TEMPLATES_DIR)),
         autoescape=select_autoescape(("html", "xml")),
     )
-    template = env.get_template("report.html")
-    html_string = template.render(
-        title=title,
-        subtitle=subtitle,
-        content=content or "",
-        chart_imgs=chart_imgs or [],
-        table_html=table_html,
-    )
+    template = env.get_template(template_name)
+    context = {
+        "title": title,
+        "subtitle": subtitle,
+        "content": content or "",
+        "chart_imgs": chart_imgs or [],
+        "table_html": table_html,
+    }
+    if extra_context:
+        context.update(extra_context)
+    html_string = template.render(**context)
 
     html_path = output_html_path or str(OUTPUT_DIR / "report.html")
     pdf_path = output_pdf_path or str(OUTPUT_DIR / "report.pdf")

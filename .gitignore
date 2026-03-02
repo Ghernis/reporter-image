@@ -1,3 +1,8 @@
 **/__pycache__/
 venv/
 output/
+remote/
+*.zip
+*.png
+report.html
+bulma-1.0.4/
