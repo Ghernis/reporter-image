@@ -13,6 +13,7 @@ RUN apt-get update \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+COPY main.py .
 COPY app/ app/
 COPY templates/ templates/
 COPY static/ static/
@@ -24,4 +25,5 @@ RUN curl -sL -o /app/static/css/bulma.min.css \
 ENV APP_DIR=/app OUTPUT_DIR=/output
 VOLUME /output
 
-CMD ["python", "-m", "app.report"]
+# Pass data via: -v $(pwd)/data:/data and DATA_PATH=/data/licensing.json or: python main.py /data/licensing.json
+CMD ["python", "main.py"]

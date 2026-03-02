@@ -1,6 +1,9 @@
-"""Generate the licensing summary report with demo data (replace with real Graph/Azure data)."""
+"""Generate the licensing summary report. Use demo data or pass a JSON data file."""
+import json
+import os
+import sys
 from datetime import datetime, timedelta
-import random
+from pathlib import Path
 
 from app.licensing import (
     build_licensing_report,
@@ -29,6 +32,7 @@ def _demo_evolution_dates(days: int = 30) -> list[str]:
 
 def _demo_series(top10_pcts: list[float], days: int = 30) -> dict[str, list[float]]:
     """Fake daily evolution: slight random walk around initial pct."""
+    import random
     names = [r[0] for r in DEMO_TOP10_RAW]
     series = {}
     for i, name in enumerate(names):
@@ -41,22 +45,63 @@ def _demo_series(top10_pcts: list[float], days: int = 30) -> dict[str, list[floa
     return series
 
 
+def load_licensing_data(path: str | Path) -> tuple[list, list[str], dict[str, list[float]]]:
+    """
+    Load licensing report data from a JSON file.
+    Expected shape:
+      {
+        "top10": [ {"name": "...", "consumed": N, "total": N}, ... ],
+        "dates": ["YYYY-MM-DD", ...],
+        "series": { "License name": [pct, ...], ... }
+      }
+    Returns (top10 list of LicenseSnapshot, dates, series).
+    """
+    path = Path(path)
+    if not path.exists():
+        raise FileNotFoundError(f"Data file not found: {path}")
+    with open(path, encoding="utf-8") as f:
+        data = json.load(f)
+    top10_raw = data["top10"]
+    top10 = [
+        license_snapshot(
+            item["name"],
+            int(item["consumed"]),
+            int(item["total"]),
+        )
+        for item in top10_raw
+    ]
+    dates = list(data["dates"])
+    series = {k: [float(x) for x in v] for k, v in data["series"].items()}
+    return top10, dates, series
+
+
 def main() -> None:
-    top10 = [license_snapshot(name, consumed, total) for name, consumed, total in DEMO_TOP10_RAW]
-    dates = _demo_evolution_dates(30)
-    series = _demo_series([s["pct"] for s in top10], 30)
+    data_path = os.environ.get("DATA_PATH") or (sys.argv[1] if len(sys.argv) > 1 else None)
+    if data_path:
+        top10, dates, series = load_licensing_data(data_path)
+        subtitle = "Top 10 licenses — consumption and evolution"
+        content = (
+            "<p>This report shows consumption of the top 10 licenses as a percentage of available. "
+            "Chart 1: current snapshot (bar). Chart 2: daily evolution.</p>"
+        )
+    else:
+        top10 = [license_snapshot(name, consumed, total) for name, consumed, total in DEMO_TOP10_RAW]
+        dates = _demo_evolution_dates(30)
+        series = _demo_series([s["pct"] for s in top10], 30)
+        subtitle = "Top 10 licenses — consumption and evolution (demo data)"
+        content = (
+            "<p>This report shows consumption of the top 10 licenses as a percentage of available. "
+            "Chart 1: current snapshot (bar). Chart 2: daily evolution over the last 30 days.</p>"
+        )
 
     html_path, pdf_path = build_licensing_report(
         top10=top10,
         dates=dates,
         series=series,
         title="Microsoft licensing summary",
-        subtitle="Top 10 licenses — consumption and evolution (demo data)",
-        content=(
-            "<p>This report shows consumption of the top 10 licenses as a percentage of available. "
-            "Chart 1: current snapshot (bar). Chart 2: daily evolution over the last 30 days.</p>"
-        ),
-        html_only=False
+        subtitle=subtitle,
+        content=content,
+        html_only=False,
     )
     print("HTML:", html_path)
     if pdf_path:
