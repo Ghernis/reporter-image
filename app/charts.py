@@ -213,3 +213,335 @@ def build_top10_assignments_removals_chart(
     plt.close(fig)
 
     return f"file://{out_path.resolve()}"
+
+
+# Palette for 10 licenses (theme-like, readable)
+_COMPANY_LICENSE_PALETTE = [
+    "#0451e4",  # primary
+    "#009fda",  # secondary-1
+    "#48c0b9",  # secondary-2
+    "#27ae60",  # green
+    "#2ecc71",  # light green
+    "#f39c12",  # amber
+    "#e67e22",  # orange
+    "#e74c3c",  # red
+    "#9b59b6",  # purple
+    "#34495e",  # dark slate
+]
+
+
+def build_company_license_stacked(
+    companies: list[str],
+    licenses: list[str],
+    company_data: list[dict[str, Any]],
+    out_path: Path,
+    *,
+    max_license_len: int = 18,
+    dpi: int = 120,
+) -> str:
+    """
+    Stacked bar chart: X = companies, each bar = 10 segments (license counts).
+    Returns path (file://) to the saved image.
+    """
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    import numpy as np
+
+    n_companies = len(companies)
+    n_licenses = len(licenses)
+    license_labels = [s[:max_license_len] + ("…" if len(s) > max_license_len else "") for s in licenses]
+    colors = _COMPANY_LICENSE_PALETTE[:n_licenses]
+    data = np.array([row["license_counts"][:n_licenses] for row in company_data], dtype=float)
+    if data.shape[1] < n_licenses:
+        pad = np.zeros((n_companies, n_licenses - data.shape[1]))
+        data = np.hstack([data, pad])
+    x = np.arange(n_companies)
+    width = 0.7
+    bottom = np.zeros(n_companies)
+    fig, ax = plt.subplots(figsize=(10, 5))
+    for i in range(n_licenses):
+        ax.bar(x, data[:, i], width, label=license_labels[i], bottom=bottom, color=colors[i])
+        bottom += data[:, i]
+    ax.set_xticks(x)
+    ax.set_xticklabels(companies, rotation=30, ha="right", fontsize=9)
+    ax.set_ylabel("License count (consumed)")
+    ax.set_title("Licenses by company — stacked count per license type")
+    ax.legend(loc="upper left", bbox_to_anchor=(1.02, 1), fontsize=7, ncol=1)
+    fig.tight_layout(rect=[0, 0, 0.85, 1])
+    out_path = Path(out_path)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(out_path, bbox_inches="tight", dpi=dpi)
+    plt.close(fig)
+    return f"file://{out_path.resolve()}"
+
+
+def build_company_heatmap_pct(
+    companies: list[str],
+    licenses: list[str],
+    company_data: list[dict[str, Any]],
+    out_path: Path,
+    *,
+    max_license_len: int = 22,
+    dpi: int = 120,
+) -> str:
+    """
+    Heatmap: rows = licenses, columns = companies, color = % consumed (0–100).
+    Returns path (file://) to the saved image.
+    """
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    import numpy as np
+
+    n_licenses = len(licenses)
+    license_labels = [s[:max_license_len] + ("…" if len(s) > max_license_len else "") for s in licenses]
+    data = np.array([[row["license_pct"][i] for i in range(n_licenses)] for row in company_data]).T
+    fig, ax = plt.subplots(figsize=(max(8, len(companies) * 1.8), max(5, n_licenses * 0.45)))
+    im = ax.imshow(data, aspect="auto", cmap="RdYlGn_r", vmin=0, vmax=100)
+    ax.set_xticks(np.arange(len(companies)))
+    ax.set_yticks(np.arange(n_licenses))
+    ax.set_xticklabels(companies, rotation=30, ha="right")
+    ax.set_yticklabels(license_labels, fontsize=8)
+    for i in range(n_licenses):
+        for j in range(len(companies)):
+            v = data[i, j]
+            text = f"{v:.0f}" if v == v else "—"
+            ax.text(j, i, text, ha="center", va="center", color="black", fontsize=7, fontweight="bold")
+    plt.colorbar(im, ax=ax, label="Consumption %", shrink=0.8)
+    ax.set_title("Licenses by company — consumption % (heatmap)")
+    fig.tight_layout()
+    out_path = Path(out_path)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(out_path, bbox_inches="tight", dpi=dpi)
+    plt.close(fig)
+    return f"file://{out_path.resolve()}"
+
+
+def build_company_assignments_removals_stacked(
+    companies: list[str],
+    company_data: list[dict[str, Any]],
+    out_path: Path,
+    *,
+    dpi: int = 120,
+) -> str:
+    """
+    Stacked bar: X = companies, green = assignments (90d), red = removals (90d).
+    Returns path (file://) to the saved image.
+    """
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    import numpy as np
+
+    assignments = [row.get("assignments_90d") or 0 for row in company_data]
+    removals = [row.get("removals_90d") or 0 for row in company_data]
+    x = np.arange(len(companies))
+    width = 0.6
+    fig, ax = plt.subplots(figsize=(8, 5))
+    ax.bar(x, assignments, width, label="Assignments (90d)", color="#27ae60")
+    ax.bar(x, removals, width, bottom=assignments, label="Removals (90d)", color="#c0392b")
+    ax.set_xticks(x)
+    ax.set_xticklabels(companies, rotation=30, ha="right")
+    ax.set_ylabel("Count")
+    ax.set_title("Movement by company — assignments and removals (90d)")
+    ax.legend(loc="upper right", fontsize=8)
+    fig.tight_layout()
+    out_path = Path(out_path)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(out_path, bbox_inches="tight", dpi=dpi)
+    plt.close(fig)
+    return f"file://{out_path.resolve()}"
+
+
+def build_company_scatter_assignments_removals(
+    company_data: list[dict[str, Any]],
+    out_path: Path,
+    *,
+    dpi: int = 120,
+) -> str:
+    """
+    Scatter: X = assignments (90d), Y = removals (90d), one point per company.
+    Returns path (file://) to the saved image.
+    """
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    import numpy as np
+
+    companies = [row["company"] for row in company_data]
+    x = np.array([row.get("assignments_90d") or 0 for row in company_data])
+    y = np.array([row.get("removals_90d") or 0 for row in company_data])
+    fig, ax = plt.subplots(figsize=(7, 6))
+    ax.scatter(x, y, color="#0451e4", s=120, alpha=0.8, edgecolors="white", linewidths=1.5)
+    for i, name in enumerate(companies):
+        ax.annotate(name, (x[i], y[i]), xytext=(6, 6), textcoords="offset points", fontsize=8, ha="left")
+    ax.set_xlabel("Assignments (90d)")
+    ax.set_ylabel("Removals (90d)")
+    ax.set_title("Movement by company — assignments vs removals")
+    ax.grid(True, alpha=0.3)
+    fig.tight_layout()
+    out_path = Path(out_path)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(out_path, bbox_inches="tight", dpi=dpi)
+    plt.close(fig)
+    return f"file://{out_path.resolve()}"
+
+
+# SharePoint report colors: orange = billable, blue = E5 entitlement, dark grey = archive
+_SHAREPOINT_BILLABLE = "#e67e22"
+_SHAREPOINT_E5 = "#0451e4"
+_SHAREPOINT_ARCHIVE = "#34495e"
+
+
+def build_sharepoint_stacked(
+    companies: list[str],
+    company_data: list[dict[str, Any]],
+    out_path: Path,
+    *,
+    dpi: int = 120,
+) -> str:
+    """
+    Stacked bar: X = companies, 3 segments = billable (orange), E5 entitlement (blue), archive (dark grey).
+    Returns path (file://) to the saved image.
+    """
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    import numpy as np
+
+    billable = np.array([row.get("billable_storage") or 0 for row in company_data])
+    e5 = np.array([row.get("e5_entitlement") or 0 for row in company_data])
+    archive = np.array([row.get("archive") or 0 for row in company_data])
+    x = np.arange(len(companies))
+    width = 0.6
+    fig, ax = plt.subplots(figsize=(9, 5))
+    ax.bar(x, billable, width, label="Billable", color=_SHAREPOINT_BILLABLE)
+    ax.bar(x, e5, width, bottom=billable, label="E5 Entitlement", color=_SHAREPOINT_E5)
+    ax.bar(x, archive, width, bottom=billable + e5, label="Archive", color=_SHAREPOINT_ARCHIVE)
+    ax.set_xticks(x)
+    ax.set_xticklabels(companies, rotation=30, ha="right")
+    ax.set_ylabel("Storage (GB)")
+    ax.set_title("SharePoint storage by company — billable, E5 entitlement, archive")
+    ax.legend(loc="upper right", fontsize=8)
+    fig.tight_layout()
+    out_path = Path(out_path)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(out_path, bbox_inches="tight", dpi=dpi)
+    plt.close(fig)
+    return f"file://{out_path.resolve()}"
+
+
+def build_sharepoint_efficiency_bars(
+    companies: list[str],
+    company_data: list[dict[str, Any]],
+    out_path: Path,
+    *,
+    dpi: int = 120,
+) -> str:
+    """
+    Horizontal bar chart: each company, % efficiency = storage_used / entitlement.
+    Returns path (file://) to the saved image.
+    """
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    import numpy as np
+
+    pcts = []
+    for row in company_data:
+        ent = row.get("e5_entitlement") or 1
+        used = row.get("storage_used") or 0
+        pcts.append(100.0 * used / ent if ent else 0)
+    y_pos = np.arange(len(companies))
+    colors = ["#e74c3c" if p > 100 else "#27ae60" for p in pcts]
+    fig, ax = plt.subplots(figsize=(8, 4))
+    ax.barh(y_pos, pcts, color=colors)
+    ax.set_yticks(y_pos)
+    ax.set_yticklabels(companies, fontsize=9)
+    ax.set_xlabel("Efficiency % (storage used / entitlement)")
+    ax.axvline(x=100, color="gray", linestyle="--", linewidth=0.8)
+    ax.set_title("Storage efficiency by company")
+    fig.tight_layout()
+    out_path = Path(out_path)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(out_path, bbox_inches="tight", dpi=dpi)
+    plt.close(fig)
+    return f"file://{out_path.resolve()}"
+
+
+def build_sharepoint_archive_ratio_bars(
+    companies: list[str],
+    company_data: list[dict[str, Any]],
+    out_path: Path,
+    *,
+    dpi: int = 120,
+) -> str:
+    """
+    Horizontal bar chart: each company, archive_ratio % = archive_storage / total_storage.
+    Returns path (file://) to the saved image.
+    """
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    import numpy as np
+
+    pcts = []
+    for row in company_data:
+        total = row.get("storage_used") or 1
+        arch = row.get("archive") or 0
+        pcts.append(100.0 * arch / total if total else 0)
+    y_pos = np.arange(len(companies))
+    fig, ax = plt.subplots(figsize=(8, 4))
+    ax.barh(y_pos, pcts, color=_SHAREPOINT_ARCHIVE)
+    ax.set_yticks(y_pos)
+    ax.set_yticklabels(companies, fontsize=9)
+    ax.set_xlabel("Archive ratio % (archive / total storage)")
+    ax.set_xlim(0, 100)
+    ax.set_title("Archive ratio by company")
+    fig.tight_layout()
+    out_path = Path(out_path)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(out_path, bbox_inches="tight", dpi=dpi)
+    plt.close(fig)
+    return f"file://{out_path.resolve()}"
+
+
+def build_sharepoint_trend(
+    companies: list[str],
+    dates: list[str],
+    trend_series: dict[str, list[float]],
+    out_path: Path,
+    *,
+    dpi: int = 120,
+) -> str:
+    """
+    Multi-line chart: X = dates, one line per company (storage over time).
+    Returns path (file://) to the saved image.
+    """
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    import matplotlib.dates as mdates
+    import numpy as np
+    from datetime import datetime
+
+    x_dt = [datetime.strptime(d, "%Y-%m-%d") for d in dates]
+    fig, ax = plt.subplots(figsize=(10, 5))
+    colors = ["#0451e4", "#009fda", "#48c0b9", "#27ae60", "#e67e22", "#34495e"]
+    for i, name in enumerate(companies):
+        vals = trend_series.get(name)
+        if vals and len(vals) == len(x_dt):
+            ax.plot(x_dt, vals, label=name, linewidth=1.5, color=colors[i % len(colors)])
+    ax.set_xlabel("Date")
+    ax.set_ylabel("Storage used (GB)")
+    ax.set_title("SharePoint storage trend by company")
+    ax.legend(loc="best", fontsize=8)
+    ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
+    plt.xticks(rotation=45, ha="right")
+    fig.tight_layout()
+    out_path = Path(out_path)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(out_path, bbox_inches="tight", dpi=dpi)
+    plt.close(fig)
+    return f"file://{out_path.resolve()}"

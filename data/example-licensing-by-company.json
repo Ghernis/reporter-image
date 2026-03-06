@@ -1,0 +1,52 @@
+{
+  "companies": ["North Division", "South Division", "East Division", "West Division", "Central"],
+  "licenses": [
+    "Microsoft 365 E3",
+    "Microsoft 365 E5",
+    "Office 365 E1",
+    "Power BI Pro",
+    "Project Plan 3",
+    "Visio Plan 2",
+    "Windows 10/11 E3",
+    "EMS E3",
+    "EMS E5",
+    "Azure AD P1"
+  ],
+  "company_data": [
+    {
+      "company": "North Division",
+      "license_counts": [180, 95, 420, 32, 18, 12, 220, 72, 38, 140],
+      "license_pct": [90.0, 95.0, 84.0, 80.0, 90.0, 85.7, 88.0, 90.0, 79.2, 87.5],
+      "assignments_90d": 89,
+      "removals_90d": 24
+    },
+    {
+      "company": "South Division",
+      "license_counts": [120, 55, 380, 28, 14, 8, 180, 48, 28, 95],
+      "license_pct": [96.0, 91.7, 76.0, 93.3, 93.3, 80.0, 92.3, 96.0, 93.3, 95.0],
+      "assignments_90d": 62,
+      "removals_90d": 31
+    },
+    {
+      "company": "East Division",
+      "license_counts": [95, 48, 250, 22, 10, 7, 145, 35, 22, 88],
+      "license_pct": [95.0, 96.0, 83.3, 88.0, 83.3, 87.5, 90.6, 87.5, 91.7, 88.0],
+      "assignments_90d": 54,
+      "removals_90d": 18
+    },
+    {
+      "company": "West Division",
+      "license_counts": [85, 52, 150, 18, 8, 8, 45, 25, 17, 27],
+      "license_pct": [85.0, 86.7, 75.0, 90.0, 80.0, 80.0, 90.0, 83.3, 85.0, 90.0],
+      "assignments_90d": 38,
+      "removals_90d": 22
+    },
+    {
+      "company": "Central",
+      "license_counts": [0, 10, 0, 15, 0, 0, 10, 0, 10, 50],
+      "license_pct": [0, 100.0, 0, 100.0, 0, 0, 100.0, 0, 100.0, 100.0],
+      "assignments_90d": 12,
+      "removals_90d": 5
+    }
+  ]
+}

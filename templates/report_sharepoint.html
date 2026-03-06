@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="content">
+  {{ content | safe if content else '' }}
+</div>
+
+{% if chart_imgs and chart_imgs|length >= 1 %}
+<h2 class="title is-4" style="margin-top: 2rem;">Storage by company (stacked)</h2>
+<figure class="chart-wrapper no-break" style="margin-top: 1rem;">
+  <img src="{{ chart_imgs[0] }}" alt="SharePoint storage stacked" style="max-width: 100%; height: auto;">
+  <figcaption style="margin-top: 0.5rem; font-size: 0.9rem;">Billable (orange), E5 Entitlement (blue), Archive (dark grey).</figcaption>
+</figure>
+{% endif %}
+
+{% if company_data %}
+<h2 class="title is-4" style="margin-top: 2rem;">Storage and cost table</h2>
+<div class="box no-break" style="margin-top: 1rem;">
+  <table class="table is-striped is-narrow">
+    <thead>
+      <tr>
+        <th>Company</th>
+        <th>Storage used</th>
+        <th>E5 Entitlement</th>
+        <th>Archive</th>
+        <th>Billable storage</th>
+        <th>Cost</th>
+        <th>Archive Cost</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in company_data %}
+      <tr>
+        <td>{{ row.company }}</td>
+        <td>{{ row.storage_used | default(0) }}</td>
+        <td>{{ row.e5_entitlement | default(0) }}</td>
+        <td>{{ row.archive | default(0) }}</td>
+        <td>{{ row.billable_storage | default(0) }}</td>
+        <td>{{ (row.cost | default(0)) | round(2) }}</td>
+        <td>{{ (row.archive_cost | default(0)) | round(2) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
+{% if chart_imgs and chart_imgs|length >= 2 %}
+<h2 class="title is-4" style="margin-top: 2rem;">Efficiency indicators</h2>
+<h3 class="title is-5" style="margin-top: 1rem;">Efficiency % (storage used / entitlement)</h3>
+<figure class="chart-wrapper no-break" style="margin-top: 0.5rem;">
+  <img src="{{ chart_imgs[1] }}" alt="Efficiency by company" style="max-width: 100%; height: auto;">
+</figure>
+{% endif %}
+
+{% if chart_imgs and chart_imgs|length >= 3 %}
+<h3 class="title is-5" style="margin-top: 1.5rem;">Archive ratio % (archive / total storage)</h3>
+<figure class="chart-wrapper no-break" style="margin-top: 0.5rem;">
+  <img src="{{ chart_imgs[2] }}" alt="Archive ratio by company" style="max-width: 100%; height: auto;">
+</figure>
+{% endif %}
+
+{% if chart_imgs and chart_imgs|length >= 4 %}
+<h2 class="title is-4" style="margin-top: 2rem;">Trend over time</h2>
+<figure class="chart-wrapper no-break" style="margin-top: 1rem;">
+  <img src="{{ chart_imgs[3] }}" alt="Storage trend by company" style="max-width: 100%; height: auto;">
+  <figcaption style="margin-top: 0.5rem; font-size: 0.9rem;">Storage used (GB) by company over time.</figcaption>
+</figure>
+{% endif %}
+{% endblock %}
+
+{% block charts %}
+{% if chart_imgs and chart_imgs|length < 4 %}
+{% for img_path in chart_imgs %}
+<figure class="chart-wrapper no-break" style="margin-top: 1.5rem;">
+  <img src="{{ img_path }}" alt="Chart" style="max-width: 100%; height: auto;">
+</figure>
+{% endfor %}
+{% endif %}
+{% endblock %}
+
+{% block tables %}
+{% endblock %}

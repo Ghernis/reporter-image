@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="content">
+  {{ content | safe if content else '' }}
+</div>
+
+{% if chart_imgs and chart_imgs|length >= 4 %}
+<h2 class="title is-4" style="margin-top: 2rem;">License count by company</h2>
+<figure class="chart-wrapper no-break" style="margin-top: 1rem;">
+  <img src="{{ chart_imgs[0] }}" alt="Stacked license count by company" style="max-width: 100%; height: auto;">
+  <figcaption style="margin-top: 0.5rem; font-size: 0.9rem;">Stacked bars: consumed count per license type (top 10) per company.</figcaption>
+</figure>
+
+<h2 class="title is-4" style="margin-top: 2rem;">Consumption % by company (heatmap)</h2>
+<figure class="chart-wrapper no-break" style="margin-top: 1rem;">
+  <img src="{{ chart_imgs[1] }}" alt="Heatmap consumption %" style="max-width: 100%; height: auto;">
+  <figcaption style="margin-top: 0.5rem; font-size: 0.9rem;">Rows = licenses, columns = companies; color = consumption %.</figcaption>
+</figure>
+
+<h2 class="title is-4" style="margin-top: 2rem;">Movement by company (90d)</h2>
+<figure class="chart-wrapper no-break" style="margin-top: 1rem;">
+  <img src="{{ chart_imgs[2] }}" alt="Assignments and removals by company" style="max-width: 100%; height: auto;">
+  <figcaption style="margin-top: 0.5rem; font-size: 0.9rem;">Stacked bars: green = assignments, red = removals.</figcaption>
+</figure>
+
+<h2 class="title is-4" style="margin-top: 2rem;">Assignments vs removals (by company)</h2>
+<figure class="chart-wrapper no-break" style="margin-top: 1rem;">
+  <img src="{{ chart_imgs[3] }}" alt="Scatter assignments vs removals" style="max-width: 100%; height: auto;">
+  <figcaption style="margin-top: 0.5rem; font-size: 0.9rem;">One point per company; X = assignments (90d), Y = removals (90d).</figcaption>
+</figure>
+{% endif %}
+{% endblock %}
+
+{% block charts %}
+{% if not chart_imgs or chart_imgs|length < 4 %}
+{% if chart_imgs %}
+{% for img_path in chart_imgs %}
+<figure class="chart-wrapper no-break" style="margin-top: 1.5rem;">
+  <img src="{{ img_path }}" alt="Chart" style="max-width: 100%; height: auto;">
+</figure>
+{% endfor %}
+{% endif %}
+{% endif %}
+{% endblock %}
+
+{% block tables %}
+{% if table_html %}
+<div class="no-break box" style="margin-top: 1.5rem;">
+  {{ table_html | safe }}
+</div>
+{% endif %}
+{% endblock %}
