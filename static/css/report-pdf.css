@@ -34,6 +34,7 @@
 .hero .title.is-1 {
   font-size: 2rem;
   line-height: 1.2;
+  margin-bottom: 0.85rem;
 }
 .hero .subtitle.is-4 {
   font-size: 1.25rem;
