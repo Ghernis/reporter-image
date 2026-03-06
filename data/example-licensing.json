@@ -1,15 +1,15 @@
 {
   "top10": [
-    {"name": "Microsoft 365 E3", "consumed": 480, "total": 500},
-    {"name": "Microsoft 365 E5", "consumed": 220, "total": 250},
-    {"name": "Office 365 E1", "consumed": 1200, "total": 1500},
-    {"name": "Power BI Pro", "consumed": 85, "total": 100},
-    {"name": "Project Plan 3", "consumed": 42, "total": 50},
-    {"name": "Visio Plan 2", "consumed": 28, "total": 35},
-    {"name": "Windows 10/11 E3", "consumed": 600, "total": 650},
-    {"name": "EMS E3", "consumed": 180, "total": 200},
-    {"name": "EMS E5", "consumed": 95, "total": 120},
-    {"name": "Azure AD P1", "consumed": 350, "total": 400}
+    {"name": "Microsoft 365 E3", "consumed": 480, "total": 500, "assignments_90d": 24, "removals_90d": 8},
+    {"name": "Microsoft 365 E5", "consumed": 220, "total": 250, "assignments_90d": 12, "removals_90d": 3},
+    {"name": "Office 365 E1", "consumed": 1200, "total": 1500, "assignments_90d": 45, "removals_90d": 22},
+    {"name": "Power BI Pro", "consumed": 85, "total": 100, "assignments_90d": 5, "removals_90d": 2},
+    {"name": "Project Plan 3", "consumed": 42, "total": 50, "assignments_90d": 3, "removals_90d": 1},
+    {"name": "Visio Plan 2", "consumed": 28, "total": 35, "assignments_90d": 2, "removals_90d": 0},
+    {"name": "Windows 10/11 E3", "consumed": 600, "total": 650, "assignments_90d": 18, "removals_90d": 10},
+    {"name": "EMS E3", "consumed": 180, "total": 200, "assignments_90d": 8, "removals_90d": 4},
+    {"name": "EMS E5", "consumed": 95, "total": 120, "assignments_90d": 6, "removals_90d": 2},
+    {"name": "Azure AD P1", "consumed": 350, "total": 400, "assignments_90d": 15, "removals_90d": 9}
   ],
   "dates": [
     "2025-02-01", "2025-02-02", "2025-02-03", "2025-02-04", "2025-02-05",

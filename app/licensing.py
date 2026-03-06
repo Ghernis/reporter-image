@@ -4,12 +4,16 @@ Data contract and builder for the Microsoft licensing summary report.
 from pathlib import Path
 from typing import TypedDict
 
-from app.charts import build_top10_consumption_barchart, build_top10_evolution_chart
+from app.charts import (
+    build_top10_assignments_removals_chart,
+    build_top10_consumption_barchart,
+    build_top10_evolution_matrix,
+)
 from app.report import OUTPUT_DIR, build_report
 
 
 class LicenseSnapshot(TypedDict):
-    """One row per license (top 10). pct = consumed/total*100 when total > 0."""
+    """One row per license (top 10). pct = consumed/total*100 when total > 0. May include assignments_90d, removals_90d."""
     name: str
     consumed: int
     total: int
@@ -47,17 +51,26 @@ def build_licensing_report(
     out_dir.mkdir(parents=True, exist_ok=True)
 
     bar_path = out_dir / "chart_top10_bar.png"
-    evolution_path = out_dir / "chart_top10_evolution.png"
+    matrix_path = out_dir / "chart_top10_evolution_matrix.png"
+    names = [s["name"] for s in top10]
 
     chart_imgs = [
         build_top10_consumption_barchart(top10, bar_path),
-        build_top10_evolution_chart(dates, series, evolution_path),
+        build_top10_evolution_matrix(names, dates, series, matrix_path),
     ]
 
+    has_activity_90d = any(
+        s.get("assignments_90d") is not None or s.get("removals_90d") is not None
+        for s in top10
+    )
+    if has_activity_90d:
+        ar_path = out_dir / "chart_top10_assignments_removals.png"
+        chart_imgs.append(build_top10_assignments_removals_chart(top10, ar_path))
     extra = {
         "top10": top10,
         "evolution_dates": dates,
         "evolution_series": series,
+        "has_activity_90d": has_activity_90d,
     }
 
     return build_report(

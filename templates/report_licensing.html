@@ -15,12 +15,20 @@
 {% endif %}
 
 {% if evolution_dates and evolution_series %}
-<h2 class="title is-4" style="margin-top: 2rem;">Evolution over time</h2>
+<h2 class="title is-4" style="margin-top: 2rem;">Evolution by license (2×5)</h2>
 <figure class="chart-wrapper no-break" style="margin-top: 1rem;">
   {% if chart_imgs and chart_imgs|length > 1 %}
-  <img src="{{ chart_imgs[1] }}" alt="Top 10 evolution" style="max-width: 100%; height: auto;">
+  <img src="{{ chart_imgs[1] }}" alt="Top 10 evolution matrix" style="max-width: 100%; height: auto;">
   {% endif %}
-  <figcaption style="margin-top: 0.5rem; font-size: 0.9rem;">Daily consumption % for top 10 licenses</figcaption>
+  <figcaption style="margin-top: 0.5rem; font-size: 0.9rem;">% capacity and trend line; caption: trend (30d) and P.E. (projected exhaustion in days)</figcaption>
+</figure>
+{% endif %}
+
+{% if has_activity_90d and chart_imgs and chart_imgs|length > 2 %}
+<h2 class="title is-4" style="margin-top: 2rem;">Assignments and removals (90d)</h2>
+<figure class="chart-wrapper no-break" style="margin-top: 1rem;">
+  <img src="{{ chart_imgs[2] }}" alt="Assignments and removals by license" style="max-width: 100%; height: auto;">
+  <figcaption style="margin-top: 0.5rem; font-size: 0.9rem;">Stacked columns: green = assignments, red = removals (past 90 days)</figcaption>
 </figure>
 {% endif %}
 {% endblock %}
@@ -52,6 +60,10 @@
         <th>Consumed</th>
         <th>Total</th>
         <th>%</th>
+        {% if has_activity_90d %}
+        <th>Assignments (90d)</th>
+        <th>Removals (90d)</th>
+        {% endif %}
       </tr>
     </thead>
     <tbody>
@@ -61,6 +73,10 @@
         <td>{{ row.consumed }}</td>
         <td>{{ row.total }}</td>
         <td>{{ row.pct | round(1) }}%</td>
+        {% if has_activity_90d %}
+        <td>{{ row.assignments_90d | default('—') }}</td>
+        <td>{{ row.removals_90d | default('—') }}</td>
+        {% endif %}
       </tr>
       {% endfor %}
     </tbody>

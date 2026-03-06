@@ -10,18 +10,18 @@ from app.licensing import (
     license_snapshot,
 )
 
-# Demo: top 10 licenses (name, consumed, total)
+# Demo: top 10 licenses (name, consumed, total, assignments_90d, removals_90d)
 DEMO_TOP10_RAW = [
-    ("Microsoft 365 E3", 480, 500),
-    ("Microsoft 365 E5", 220, 250),
-    ("Office 365 E1", 1200, 1500),
-    ("Power BI Pro", 85, 100),
-    ("Project Plan 3", 42, 50),
-    ("Visio Plan 2", 28, 35),
-    ("Windows 10/11 E3", 600, 650),
-    ("EMS E3", 180, 200),
-    ("EMS E5", 95, 120),
-    ("Azure AD P1", 350, 400),
+    ("Microsoft 365 E3", 480, 500, 24, 8),
+    ("Microsoft 365 E5", 220, 250, 12, 3),
+    ("Office 365 E1", 1200, 1500, 45, 22),
+    ("Power BI Pro", 85, 100, 5, 2),
+    ("Project Plan 3", 42, 50, 3, 1),
+    ("Visio Plan 2", 28, 35, 2, 0),
+    ("Windows 10/11 E3", 600, 650, 18, 10),
+    ("EMS E3", 180, 200, 8, 4),
+    ("EMS E5", 95, 120, 6, 2),
+    ("Azure AD P1", 350, 400, 15, 9),
 ]
 
 
@@ -62,14 +62,18 @@ def load_licensing_data(path: str | Path) -> tuple[list, list[str], dict[str, li
     with open(path, encoding="utf-8") as f:
         data = json.load(f)
     top10_raw = data["top10"]
-    top10 = [
-        license_snapshot(
+    top10 = []
+    for item in top10_raw:
+        snap = license_snapshot(
             item["name"],
             int(item["consumed"]),
             int(item["total"]),
         )
-        for item in top10_raw
-    ]
+        if "assignments_90d" in item:
+            snap["assignments_90d"] = int(item["assignments_90d"])
+        if "removals_90d" in item:
+            snap["removals_90d"] = int(item["removals_90d"])
+        top10.append(snap)
     dates = list(data["dates"])
     series = {k: [float(x) for x in v] for k, v in data["series"].items()}
     return top10, dates, series
@@ -85,7 +89,14 @@ def main() -> None:
             "Chart 1: current snapshot (bar). Chart 2: daily evolution.</p>"
         )
     else:
-        top10 = [license_snapshot(name, consumed, total) for name, consumed, total in DEMO_TOP10_RAW]
+        top10 = []
+        for t in DEMO_TOP10_RAW:
+            name, consumed, total = t[0], t[1], t[2]
+            snap = license_snapshot(name, consumed, total)
+            if len(t) >= 5:
+                snap["assignments_90d"] = t[3]
+                snap["removals_90d"] = t[4]
+            top10.append(snap)
         dates = _demo_evolution_dates(30)
         series = _demo_series([s["pct"] for s in top10], 30)
         subtitle = "Top 10 licenses — consumption and evolution (demo data)"
