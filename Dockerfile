@@ -28,4 +28,4 @@ VOLUME /output
 
 # Run any report: python run_reports.py [licensing|company|sharepoint] [data_path]
 # Examples: run_reports.py licensing  |  run_reports.py company /data/by-company.json
-CMD ["python", "run_reports.py", "licensing"]
+CMD ["python", "run_reports.py", "all"]
