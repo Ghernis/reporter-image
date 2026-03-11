@@ -13,7 +13,7 @@ RUN apt-get update \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY main.py main_company.py main_sharepoint.py run_reports.py .
+COPY main.py main_company.py main_sharepoint.py main_activity.py run_reports.py .
 COPY app/ app/
 COPY templates/ templates/
 COPY static/ static/

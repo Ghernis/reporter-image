@@ -4,6 +4,27 @@
   {{ content | safe if content else '' }}
 </div>
 
+{% if company_data %}
+<h2 class="title is-4" style="margin-top: 2rem;">Summary by company</h2>
+<div class="columns is-multiline" style="margin-top: 1rem;">
+  {% for row in company_data %}
+  <div class="column is-4-widescreen is-6-tablet">
+    <div class="box no-break" style="height: 100%;">
+      <h3 class="title is-5" style="margin-bottom: 0.75rem;">{{ row.company }}</h3>
+      <ul class="content" style="list-style: none; margin-left: 0;">
+        <li><strong>Total SharePoint Storage:</strong> {{ row.storage_used | default(0) }} GB</li>
+        <li><strong>Covered by E5:</strong> {{ row.e5_entitlement | default(0) }} GB</li>
+        <li><strong>Archived:</strong> {{ row.archive | default(0) }} GB</li>
+        <li><strong>Billable:</strong> {{ row.billable_storage | default(0) }} GB</li>
+        <li><strong>Monthly Cost:</strong> ${{ (row.cost | default(0)) | round(2) }}</li>
+        <li><strong>Cost of Archive:</strong> ${{ (row.archive_cost | default(0)) | round(2) }}</li>
+      </ul>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
 {% if chart_imgs and chart_imgs|length >= 1 %}
 <h2 class="title is-4" style="margin-top: 2rem;">Storage by company (stacked)</h2>
 <figure class="chart-wrapper no-break" style="margin-top: 1rem;">

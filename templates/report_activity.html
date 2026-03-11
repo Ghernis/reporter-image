@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="content">
+  {{ content | safe if content else '' }}
+</div>
+
+{% if chart_imgs and chart_imgs|length >= 1 %}
+<h2 class="title is-4" style="margin-top: 2rem;">User activity (active, low usage, inactive)</h2>
+<figure class="chart-wrapper no-break" style="margin-top: 1rem;">
+  <img src="{{ chart_imgs[0] }}" alt="Activity buckets" style="max-width: 100%; height: auto;">
+  <figcaption style="margin-top: 0.5rem; font-size: 0.9rem;">Users on E5 / E3 / F3 by activity score.</figcaption>
+</figure>
+{% endif %}
+
+{% if potential_savings is defined and inactive_count is defined and cost_per_inactive_user_per_month is defined %}
+<h2 class="title is-4" style="margin-top: 2rem;">Potential monthly savings</h2>
+<div class="box no-break" style="margin-top: 1rem; max-width: 24rem;">
+  <table class="table is-narrow">
+    <tbody>
+      <tr>
+        <th>Inactive users</th>
+        <td>{{ inactive_count }}</td>
+      </tr>
+      <tr>
+        <th>Cost per inactive user (monthly)</th>
+        <td>${{ cost_per_inactive_user_per_month | round(2) }}</td>
+      </tr>
+      <tr>
+        <th><strong>Potential monthly savings</strong></th>
+        <td><strong>${{ potential_savings | round(2) }}</strong></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
+{% if chart_imgs and chart_imgs|length >= 2 %}
+<h2 class="title is-4" style="margin-top: 2rem;">Usage breakdown</h2>
+<figure class="chart-wrapper no-break" style="margin-top: 1rem;">
+  <img src="{{ chart_imgs[1] }}" alt="Activity breakdown" style="max-width: 100%; height: auto;">
+  <figcaption style="margin-top: 0.5rem; font-size: 0.9rem;">Number of users with each activity type (e.g. mail, teams, SharePoint in last 30d).</figcaption>
+</figure>
+{% endif %}
+
+{% if top_low_score_users %}
+<h2 class="title is-4" style="margin-top: 2rem;">Top 50 users with lowest score</h2>
+<div class="box no-break" style="margin-top: 1rem;">
+  <table class="table is-striped is-narrow">
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>Display name</th>
+        <th>Score</th>
+        <th>Days since last activity</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in top_low_score_users %}
+      <tr>
+        <td>{{ row.user_id }}</td>
+        <td>{{ row.display_name }}</td>
+        <td>{{ row.score }}</td>
+        <td>{{ row.day_since_last_activity }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block charts %}
+{% if chart_imgs and chart_imgs|length < 2 %}
+{% for img_path in chart_imgs %}
+<figure class="chart-wrapper no-break" style="margin-top: 1.5rem;">
+  <img src="{{ img_path }}" alt="Chart" style="max-width: 100%; height: auto;">
+</figure>
+{% endfor %}
+{% endif %}
+{% endblock %}
+
+{% block tables %}
+{% endblock %}

@@ -80,7 +80,7 @@ def load_licensing_data(path: str | Path) -> tuple[list, list[str], dict[str, li
 
 
 def main() -> None:
-    data_path = os.environ.get("DATA_PATH") or (sys.argv[1] if len(sys.argv) > 1 else None)
+    data_path = os.environ["DATA_PATH"] if "DATA_PATH" in os.environ else (sys.argv[1] if len(sys.argv) > 1 else None)
     if data_path:
         top10, dates, series = load_licensing_data(data_path)
         subtitle = "Top 10 licenses — consumption and evolution"

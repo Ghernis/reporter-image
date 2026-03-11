@@ -53,7 +53,7 @@ def load_sharepoint_data(path: str | Path) -> tuple[list[str], list[dict], list[
 
 
 def main() -> None:
-    data_path = os.environ.get("DATA_PATH") or (sys.argv[1] if len(sys.argv) > 1 else None)
+    data_path = os.environ["DATA_PATH"] if "DATA_PATH" in os.environ else (sys.argv[1] if len(sys.argv) > 1 else None)
     default_data = Path(__file__).parent / "data" / "example-sharepoint-by-company.json"
     if data_path:
         companies, company_data, trend_dates, trend_series = load_sharepoint_data(data_path)

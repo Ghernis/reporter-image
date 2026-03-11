@@ -545,3 +545,72 @@ def build_sharepoint_trend(
     fig.savefig(out_path, bbox_inches="tight", dpi=dpi)
     plt.close(fig)
     return f"file://{out_path.resolve()}"
+
+
+def build_activity_buckets_barchart(
+    buckets: list[dict[str, Any]],
+    out_path: Path,
+    *,
+    dpi: int = 120,
+) -> str:
+    """
+    Horizontal bar chart: labels = bucket names (Active, Low usage, Inactive), x = count.
+    Colors: active = green, low = orange, inactive = red.
+    Returns path (file://) to the saved image.
+    """
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    import numpy as np
+
+    labels = [b["label"] for b in buckets]
+    counts = [int(b["count"]) for b in buckets]
+    colors = ["#27ae60", "#e67e22", "#c0392b"][: len(labels)]  # green, orange, red
+    if len(colors) < len(labels):
+        colors = colors + ["#34495e"] * (len(labels) - len(colors))
+    y_pos = np.arange(len(labels))
+    fig, ax = plt.subplots(figsize=(8, 4))
+    ax.barh(y_pos, counts, color=colors)
+    ax.set_yticks(y_pos)
+    ax.set_yticklabels(labels, fontsize=10)
+    ax.set_xlabel("Number of users")
+    ax.set_title("User activity (E5 / E3 / F3) — active, low usage, inactive")
+    fig.tight_layout()
+    out_path = Path(out_path)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(out_path, bbox_inches="tight", dpi=dpi)
+    plt.close(fig)
+    return f"file://{out_path.resolve()}"
+
+
+def build_activity_breakdown_barchart(
+    activity_breakdown: list[dict[str, Any]],
+    out_path: Path,
+    *,
+    dpi: int = 120,
+    max_label_len: int = 22,
+) -> str:
+    """
+    Vertical bar chart: x = activity labels (mail, teams, etc.), y = count of users.
+    Returns path (file://) to the saved image.
+    """
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    import numpy as np
+
+    labels = [b["label"][:max_label_len] + ("…" if len(b["label"]) > max_label_len else "") for b in activity_breakdown]
+    counts = [int(b["count"]) for b in activity_breakdown]
+    x = np.arange(len(labels))
+    fig, ax = plt.subplots(figsize=(10, 5))
+    ax.bar(x, counts, color="#0451e4", width=0.6)
+    ax.set_xticks(x)
+    ax.set_xticklabels(labels, rotation=35, ha="right")
+    ax.set_ylabel("Number of users")
+    ax.set_title("Usage breakdown — users with each activity type")
+    fig.tight_layout()
+    out_path = Path(out_path)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(out_path, bbox_inches="tight", dpi=dpi)
+    plt.close(fig)
+    return f"file://{out_path.resolve()}"
