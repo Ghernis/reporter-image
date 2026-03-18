@@ -21,6 +21,10 @@
     </div>
   </section>
 
+  <p class="report-metadata">
+    Generado: {{ generated_date | default('—') }} — Source: {{ source | default('—') }} — From: {{ from_type | default('—') }}
+  </p>
+
   <section class="section">
     <div class="container">
       {% block content %}

@@ -5,6 +5,7 @@ then render to PDF via WeasyPrint when native libs (Pango) are available.
 import os
 import sys
 import tempfile
+from datetime import datetime
 from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -54,6 +55,9 @@ def build_report(
         "content": content or "",
         "chart_imgs": chart_imgs or [],
         "table_html": table_html,
+        "generated_date": datetime.now().strftime("%Y-%m-%d"),
+        "source": "Database",
+        "from_type": "Automation | Manual",
     }
     if extra_context:
         context.update(extra_context)

@@ -1,7 +1,12 @@
-/* Print layout: A4, margins, avoid breaking figures/charts */
+/* Print layout: A4, no top margin so header starts at top; page numbers at bottom */
 @page {
   size: 21cm 29.7cm;
-  margin: 2cm;
+  margin: 0 2cm 2.5cm 2cm;
+  @bottom-center {
+    content: counter(page) " / " counter(pages);
+    font-size: 0.8rem;
+    color: #6b7280;
+  }
 }
 
 .no-break,

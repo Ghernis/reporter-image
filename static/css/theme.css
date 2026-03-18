@@ -135,3 +135,12 @@ a:hover,
 .has-bg-black p {
   color: var(--color-white) !important;
 }
+
+/* Report metadata line (below hero in base template) */
+.report-metadata {
+  margin: 0 0 1rem 0;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  color: #6b7280;
+  border-bottom: 1px solid #e5e7eb;
+}
