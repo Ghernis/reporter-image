@@ -1,6 +1,6 @@
 /* Print layout: A4, margins, avoid breaking figures/charts */
 @page {
-  size: A4;
+  size: 21cm 29.7cm;
   margin: 2cm;
 }
 

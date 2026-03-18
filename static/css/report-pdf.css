@@ -14,7 +14,7 @@
   --color-muted: #6b7280;
 }
 
-/* Ensure body and hero use full page width in PDF */
+/* Ensure body uses full page width in PDF */
 body {
   width: 100%;
   max-width: 100%;
@@ -22,22 +22,46 @@ body {
   padding: 0;
 }
 
-/* Hero: full-width bar, slim and professional */
+/* Hero: full-bleed bar (into page margins), slim and professional */
 .hero {
   display: block;
-  width: 100%;
-  max-width: 100%;
-  margin: 0 0 1.5rem 0;
-  padding: 0.85rem 1.5rem;
   box-sizing: border-box;
+  margin-left: -2cm;
+  margin-right: -2cm;
+  margin-bottom: 1.5rem;
+  padding: 1.25rem 2cm 1rem 2cm;
+  width: calc(100% + 4cm);
+  max-width: none;
   background-color: var(--color-primary);
   color: var(--color-on-primary);
   border-bottom: 3px solid var(--color-primary-dark);
+  position: relative;
+}
+/* Watermark / logo: subtle circle placeholder. To use your own image, add to theme or report-pdf:
+   .hero::before { content: none; }
+   .hero::after { content: ""; position: absolute; top: 50%; right: 1.5cm; width: 3rem; height: 3rem;
+     margin-top: -1.5rem; background-size: contain; background-repeat: no-repeat; background-position: center;
+     background-image: url("../images/your-logo.svg"); opacity: 0.2; pointer-events: none; }
+*/
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 1.5cm;
+  width: 4rem;
+  height: 4rem;
+  margin-top: -2rem;
+  border-radius: 50%;
+  background-color: var(--color-on-primary);
+  opacity: 0.08;
+  pointer-events: none;
 }
 .hero-body {
   display: block;
   padding: 0;
   max-width: 100%;
+  position: relative;
+  z-index: 1;
 }
 .hero .container {
   max-width: 100%;
@@ -49,19 +73,20 @@ body {
 .hero .title,
 .hero .subtitle {
   color: var(--color-on-primary) !important;
-  margin: 0;
   font-weight: 600;
 }
 .hero .title.is-1 {
   font-size: 1.5rem;
-  line-height: 1.3;
+  line-height: 1.35;
   letter-spacing: -0.02em;
-  margin-bottom: 0.25rem;
+  margin: 0 0 0.5rem 0;
 }
 .hero .subtitle.is-4 {
   font-size: 0.95rem;
   font-weight: 400;
   opacity: 0.92;
+  margin: 0;
+  line-height: 1.4;
 }
 
 /* Container: max-width, centered (not applied inside hero) */
