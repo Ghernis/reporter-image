@@ -1,12 +1,15 @@
-/* Print layout: A4, no top margin so header starts at top; page numbers at bottom */
+/* Print layout: A4; page numbers at bottom. First page: no top margin (header at top). Rest: top margin. */
 @page {
   size: 21cm 29.7cm;
-  margin: 0 2cm 2.5cm 2cm;
+  margin: 1.25cm 2cm 2.5cm 2cm;
   @bottom-center {
     content: counter(page) " / " counter(pages);
     font-size: 0.8rem;
     color: #6b7280;
   }
+}
+@page :first {
+  margin-top: 0;
 }
 
 .no-break,
