@@ -38,23 +38,30 @@ body {
   border-bottom: 4px solid #0f2f7a;
   position: relative;
 }
-/* Watermark / logo: subtle circle placeholder. To use your own image, add to theme or report-pdf:
-   .hero::before { content: none; }
-   .hero::after { content: ""; position: absolute; top: 50%; right: 1.5cm; width: 3rem; height: 3rem;
-     margin-top: -1.5rem; background-size: contain; background-repeat: no-repeat; background-position: center;
-     background-image: url("../images/your-logo.svg"); opacity: 0.2; pointer-events: none; }
+/* Watermark: two overlapping transparent circles. To use your own logo instead, replace with:
+   .hero::before, .hero::after { content: none; }
+   .hero::after { content: ""; position: absolute; top: 50%; right: 1.5cm; ... background-image: url("../images/your-logo.svg"); }
 */
 .hero::before {
   content: "";
   position: absolute;
-  top: 50%;
-  right: 1.5cm;
-  width: 4rem;
-  height: 4rem;
-  margin-top: -2rem;
+  width: 12rem;
+  height: 12rem;
+  top: -4rem;
+  right: -3rem;
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 50%;
-  background-color: var(--color-on-primary);
-  opacity: 0.08;
+  pointer-events: none;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 9rem;
+  height: 9rem;
+  bottom: -3.5rem;
+  right: 4rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
   pointer-events: none;
 }
 .hero-body {

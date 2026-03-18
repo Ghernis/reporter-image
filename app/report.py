@@ -57,7 +57,7 @@ def build_report(
         "table_html": table_html,
         "generated_date": datetime.now().strftime("%Y-%m-%d"),
         "source": "Database",
-        "from_type": "Automation | Manual",
+        "from_type": "Automation",
     }
     if extra_context:
         context.update(extra_context)
