@@ -1,60 +1,83 @@
 /**
- * WeasyPrint-friendly CSS so the PDF matches the HTML report when Bulma
- * is not fully applied (flexbox/grid quirks). Uses only simple layout and
- * theme colors. Loaded only for PDF generation, after Bulma/theme/print.
+ * WeasyPrint-friendly CSS for professional PDF output.
+ * Full-width header, streamlined layout, theme colors.
  */
 /* Theme colors (match theme.css) */
 :root {
   --color-primary: #0451e4;
+  --color-primary-dark: #033a9e;
   --color-on-primary: #ffffff;
   --color-black: #000000;
   --color-white: #ffffff;
   --color-border: #dbdbdb;
   --color-stripe: #f5f5f5;
+  --color-muted: #6b7280;
 }
 
-/* Hero: full-width bar, primary background */
+/* Ensure body and hero use full page width in PDF */
+body {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Hero: full-width bar, slim and professional */
 .hero {
   display: block;
   width: 100%;
+  max-width: 100%;
+  margin: 0 0 1.5rem 0;
+  padding: 0.85rem 1.5rem;
+  box-sizing: border-box;
   background-color: var(--color-primary);
   color: var(--color-on-primary);
-  margin: 0 0 1.5rem 0;
-  padding: 2rem 0;
+  border-bottom: 3px solid var(--color-primary-dark);
 }
 .hero-body {
   display: block;
-  padding: 0 1rem;
+  padding: 0;
+  max-width: 100%;
+}
+.hero .container {
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
 }
 .hero .title,
 .hero .subtitle {
   color: var(--color-on-primary) !important;
-  margin: 0 0 0.25rem 0;
+  margin: 0;
+  font-weight: 600;
 }
 .hero .title.is-1 {
-  font-size: 2rem;
-  line-height: 1.2;
-  margin-bottom: 0.85rem;
+  font-size: 1.5rem;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.25rem;
 }
 .hero .subtitle.is-4 {
-  font-size: 1.25rem;
-  opacity: 0.95;
+  font-size: 0.95rem;
+  font-weight: 400;
+  opacity: 0.92;
 }
 
-/* Container: max-width, centered */
-.container {
+/* Container: max-width, centered (not applied inside hero) */
+body > .section .container {
   display: block;
   max-width: 960px;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
 }
 
 /* Section spacing */
 .section {
   display: block;
-  padding: 1.5rem 0;
+  padding: 1.25rem 0;
 }
 
 /* Content block: typography */
@@ -88,8 +111,8 @@
 .box {
   display: block;
   border: 1px solid var(--color-border);
-  border-radius: 4px;
-  padding: 1rem;
+  border-radius: 3px;
+  padding: 1rem 1.25rem;
   margin: 1rem 0;
   background-color: var(--color-white);
 }
@@ -97,7 +120,7 @@
 /* Figure / chart wrapper */
 figure.chart-wrapper {
   display: block;
-  margin: 1rem 0;
+  margin: 1.25rem 0;
 }
 figure img {
   max-width: 100%;
@@ -106,9 +129,10 @@ figure img {
 }
 figcaption {
   display: block;
-  margin-top: 0.25rem;
-  font-size: 0.9rem;
-  color: #666;
+  margin-top: 0.35rem;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  line-height: 1.4;
 }
 
 /* Tables (Bulma-like) */
