@@ -75,7 +75,7 @@ def build_licensing_report(
 
     return build_report(
         title=title,
-        subtitle=subtitle or "Top 10 licenses — consumption and evolution",
+        subtitle=subtitle or "Top 10 licencias — consumo y evolución",
         content=content,
         chart_imgs=chart_imgs,
         table_html=table_html,

@@ -1,15 +1,15 @@
 {
   "cost_per_inactive_user_per_month": 12.5,
   "buckets": [
-    { "label": "Active (3-5)", "count": 280 },
-    { "label": "Low usage (1-2)", "count": 150 },
-    { "label": "Inactive (0)", "count": 70 }
+    { "label": "Activos (3-5)", "count": 280 },
+    { "label": "Bajo uso (1-2)", "count": 150 },
+    { "label": "Inactivos (0)", "count": 70 }
   ],
   "activity_breakdown": [
-    { "label": "Mail (30d)", "count": 420 },
+    { "label": "Correo (30d)", "count": 420 },
     { "label": "Teams (30d)", "count": 380 },
     { "label": "SharePoint (30d)", "count": 290 },
-    { "label": "Mailbox storage", "count": 400 },
+    { "label": "Almacenamiento buzón", "count": 400 },
     { "label": "OneDrive storage", "count": 350 },
     { "label": "M365 app (30d)", "count": 310 },
     { "label": "Copilot (30d)", "count": 45 }

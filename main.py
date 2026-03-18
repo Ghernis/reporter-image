@@ -83,7 +83,7 @@ def main() -> None:
     data_path = os.environ["DATA_PATH"] if "DATA_PATH" in os.environ else (sys.argv[1] if len(sys.argv) > 1 else None)
     if data_path:
         top10, dates, series = load_licensing_data(data_path)
-        subtitle = "Top 10 licenses — consumption and evolution"
+        subtitle = "Top 10 licencias — consumo y evolución"
         content = (
             "<p>This report shows consumption of the top 10 licenses as a percentage of available. "
             "Chart 1: current snapshot (bar). Chart 2: daily evolution.</p>"
@@ -99,17 +99,17 @@ def main() -> None:
             top10.append(snap)
         dates = _demo_evolution_dates(30)
         series = _demo_series([s["pct"] for s in top10], 30)
-        subtitle = "Top 10 licenses — consumption and evolution (demo data)"
+        subtitle = "Top 10 licencias — consumo y evolución (datos demo)"
         content = (
-            "<p>This report shows consumption of the top 10 licenses as a percentage of available. "
-            "Chart 1: current snapshot (bar). Chart 2: daily evolution over the last 30 days.</p>"
+            "<p>Este informe muestra el consumo de las 10 principales licencias como porcentaje de las disponibles. "
+            "Gráfico 1: instantánea actual (barras). Gráfico 2: evolución diaria de los últimos 30 días.</p>"
         )
 
     html_path, pdf_path = build_licensing_report(
         top10=top10,
         dates=dates,
         series=series,
-        title="Microsoft licensing summary",
+        title="Resumen de licencias Microsoft",
         subtitle=subtitle,
         content=content,
         html_only=False,

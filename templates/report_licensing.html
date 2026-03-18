@@ -5,30 +5,30 @@
 </div>
 
 {% if top10 %}
-<h2 class="title is-4" style="margin-top: 2rem;">Top 10 licenses (current snapshot)</h2>
+<h2 class="title is-4" style="margin-top: 2rem;">Top 10 licencias (instantánea actual)</h2>
 <figure class="chart-wrapper no-break" style="margin-top: 1rem;">
   {% if chart_imgs and chart_imgs[0] %}
-  <img src="{{ chart_imgs[0] }}" alt="Top 10 consumption %" style="max-width: 100%; height: auto;">
+  <img src="{{ chart_imgs[0] }}" alt="Consumo % top 10" style="max-width: 100%; height: auto;">
   {% endif %}
-  <figcaption style="margin-top: 0.5rem; font-size: 0.9rem;">Consumption % of available licenses (100% = max)</figcaption>
+  <figcaption style="margin-top: 0.5rem; font-size: 0.9rem;">% de consumo sobre licencias disponibles (100% = máximo)</figcaption>
 </figure>
 {% endif %}
 
 {% if evolution_dates and evolution_series %}
-<h2 class="title is-4" style="margin-top: 2rem;">Evolution by license (2×5)</h2>
+<h2 class="title is-4" style="margin-top: 2rem;">Evolución por licencia (2×5)</h2>
 <figure class="chart-wrapper no-break" style="margin-top: 1rem;">
   {% if chart_imgs and chart_imgs|length > 1 %}
-  <img src="{{ chart_imgs[1] }}" alt="Top 10 evolution matrix" style="max-width: 100%; height: auto;">
+  <img src="{{ chart_imgs[1] }}" alt="Matriz evolución top 10" style="max-width: 100%; height: auto;">
   {% endif %}
-  <figcaption style="margin-top: 0.5rem; font-size: 0.9rem;">% capacity and trend line; caption: trend (30d) and P.E. (projected exhaustion in days)</figcaption>
+  <figcaption style="margin-top: 0.5rem; font-size: 0.9rem;">% capacidad y línea de tendencia; leyenda: tendencia (30d) y P.E. (projected exhaustion en días)</figcaption>
 </figure>
 {% endif %}
 
 {% if has_activity_90d and chart_imgs and chart_imgs|length > 2 %}
-<h2 class="title is-4" style="margin-top: 2rem;">Assignments and removals (90d)</h2>
+<h2 class="title is-4" style="margin-top: 2rem;">Assignments y removals (90d)</h2>
 <figure class="chart-wrapper no-break" style="margin-top: 1rem;">
-  <img src="{{ chart_imgs[2] }}" alt="Assignments and removals by license" style="max-width: 100%; height: auto;">
-  <figcaption style="margin-top: 0.5rem; font-size: 0.9rem;">Stacked columns: green = assignments, red = removals (past 90 days)</figcaption>
+  <img src="{{ chart_imgs[2] }}" alt="Assignments y removals por licencia" style="max-width: 100%; height: auto;">
+  <figcaption style="margin-top: 0.5rem; font-size: 0.9rem;">Columnas apiladas: verde = assignments, rojo = removals (últimos 90 días)</figcaption>
 </figure>
 {% endif %}
 {% endblock %}
@@ -38,7 +38,7 @@
 {% if not top10 and chart_imgs %}
 {% for img_path in chart_imgs %}
 <figure class="chart-wrapper no-break" style="margin-top: 1.5rem;">
-  <img src="{{ img_path }}" alt="Chart" style="max-width: 100%; height: auto;">
+  <img src="{{ img_path }}" alt="Gráfico" style="max-width: 100%; height: auto;">
 </figure>
 {% endfor %}
 {% endif %}
@@ -52,12 +52,12 @@
 {% endif %}
 {% if top10 %}
 <div class="box no-break" style="margin-top: 1.5rem;">
-  <h3 class="title is-5">Snapshot table</h3>
+  <h3 class="title is-5">Tabla resumen</h3>
   <table class="table is-striped is-narrow">
     <thead>
       <tr>
-        <th>License</th>
-        <th>Consumed</th>
+        <th>Licencia</th>
+        <th>Consumido</th>
         <th>Total</th>
         <th>%</th>
         {% if has_activity_90d %}

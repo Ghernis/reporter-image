@@ -5,19 +5,19 @@
 </div>
 
 {% if company_data %}
-<h2 class="title is-4" style="margin-top: 2rem;">Summary by company</h2>
+<h2 class="title is-4" style="margin-top: 2rem;">Resumen por empresa</h2>
 <div class="columns is-multiline" style="margin-top: 1rem;">
   {% for row in company_data %}
   <div class="column is-4-widescreen is-6-tablet">
     <div class="box no-break" style="height: 100%;">
       <h3 class="title is-5" style="margin-bottom: 0.75rem;">{{ row.company }}</h3>
       <ul class="content" style="list-style: none; margin-left: 0;">
-        <li><strong>Total SharePoint Storage:</strong> {{ row.storage_used | default(0) }} GB</li>
-        <li><strong>Covered by E5:</strong> {{ row.e5_entitlement | default(0) }} GB</li>
-        <li><strong>Archived:</strong> {{ row.archive | default(0) }} GB</li>
-        <li><strong>Billable:</strong> {{ row.billable_storage | default(0) }} GB</li>
-        <li><strong>Monthly Cost:</strong> ${{ (row.cost | default(0)) | round(2) }}</li>
-        <li><strong>Cost of Archive:</strong> ${{ (row.archive_cost | default(0)) | round(2) }}</li>
+        <li><strong>Almacenamiento total SharePoint:</strong> {{ row.storage_used | default(0) }} GB</li>
+        <li><strong>Cubierto por E5:</strong> {{ row.e5_entitlement | default(0) }} GB</li>
+        <li><strong>Archivado:</strong> {{ row.archive | default(0) }} GB</li>
+        <li><strong>Facturable:</strong> {{ row.billable_storage | default(0) }} GB</li>
+        <li><strong>Coste mensual:</strong> ${{ (row.cost | default(0)) | round(2) }}</li>
+        <li><strong>Coste de archivo:</strong> ${{ (row.archive_cost | default(0)) | round(2) }}</li>
       </ul>
     </div>
   </div>
@@ -26,26 +26,26 @@
 {% endif %}
 
 {% if chart_imgs and chart_imgs|length >= 1 %}
-<h2 class="title is-4" style="margin-top: 2rem;">Storage by company (stacked)</h2>
+<h2 class="title is-4" style="margin-top: 2rem;">Almacenamiento por empresa (apilado)</h2>
 <figure class="chart-wrapper no-break" style="margin-top: 1rem;">
-  <img src="{{ chart_imgs[0] }}" alt="SharePoint storage stacked" style="max-width: 100%; height: auto;">
-  <figcaption style="margin-top: 0.5rem; font-size: 0.9rem;">Billable (orange), E5 Entitlement (blue), Archive (dark grey).</figcaption>
+  <img src="{{ chart_imgs[0] }}" alt="Almacenamiento SharePoint apilado" style="max-width: 100%; height: auto;">
+  <figcaption style="margin-top: 0.5rem; font-size: 0.9rem;">Facturable (naranja), E5 Entitlement (azul), Archive (gris oscuro).</figcaption>
 </figure>
 {% endif %}
 
 {% if company_data %}
-<h2 class="title is-4" style="margin-top: 2rem;">Storage and cost table</h2>
+<h2 class="title is-4" style="margin-top: 2rem;">Tabla de almacenamiento y coste</h2>
 <div class="box no-break" style="margin-top: 1rem;">
   <table class="table is-striped is-narrow">
     <thead>
       <tr>
-        <th>Company</th>
-        <th>Storage used</th>
+        <th>Empresa</th>
+        <th>Almacenamiento usado</th>
         <th>E5 Entitlement</th>
         <th>Archive</th>
-        <th>Billable storage</th>
-        <th>Cost</th>
-        <th>Archive Cost</th>
+        <th>Almacenamiento facturable</th>
+        <th>Coste</th>
+        <th>Coste de archivo</th>
       </tr>
     </thead>
     <tbody>
@@ -66,25 +66,25 @@
 {% endif %}
 
 {% if chart_imgs and chart_imgs|length >= 2 %}
-<h2 class="title is-4" style="margin-top: 2rem;">Efficiency indicators</h2>
-<h3 class="title is-5" style="margin-top: 1rem;">Efficiency % (storage used / entitlement)</h3>
+<h2 class="title is-4" style="margin-top: 2rem;">Indicadores de eficiencia</h2>
+<h3 class="title is-5" style="margin-top: 1rem;">% eficiencia (almacenamiento usado / entitlement)</h3>
 <figure class="chart-wrapper no-break" style="margin-top: 0.5rem;">
-  <img src="{{ chart_imgs[1] }}" alt="Efficiency by company" style="max-width: 100%; height: auto;">
+  <img src="{{ chart_imgs[1] }}" alt="Eficiencia por empresa" style="max-width: 100%; height: auto;">
 </figure>
 {% endif %}
 
 {% if chart_imgs and chart_imgs|length >= 3 %}
-<h3 class="title is-5" style="margin-top: 1.5rem;">Archive ratio % (archive / total storage)</h3>
+<h3 class="title is-5" style="margin-top: 1.5rem;">% ratio de archivo (archive / almacenamiento total)</h3>
 <figure class="chart-wrapper no-break" style="margin-top: 0.5rem;">
-  <img src="{{ chart_imgs[2] }}" alt="Archive ratio by company" style="max-width: 100%; height: auto;">
+  <img src="{{ chart_imgs[2] }}" alt="Ratio de archivo por empresa" style="max-width: 100%; height: auto;">
 </figure>
 {% endif %}
 
 {% if chart_imgs and chart_imgs|length >= 4 %}
-<h2 class="title is-4" style="margin-top: 2rem;">Trend over time</h2>
+<h2 class="title is-4" style="margin-top: 2rem;">Evolución en el tiempo</h2>
 <figure class="chart-wrapper no-break" style="margin-top: 1rem;">
-  <img src="{{ chart_imgs[3] }}" alt="Storage trend by company" style="max-width: 100%; height: auto;">
-  <figcaption style="margin-top: 0.5rem; font-size: 0.9rem;">Storage used (GB) by company over time.</figcaption>
+  <img src="{{ chart_imgs[3] }}" alt="Evolución almacenamiento por empresa" style="max-width: 100%; height: auto;">
+  <figcaption style="margin-top: 0.5rem; font-size: 0.9rem;">Almacenamiento usado (GB) por empresa en el tiempo.</figcaption>
 </figure>
 {% endif %}
 {% endblock %}
@@ -93,7 +93,7 @@
 {% if chart_imgs and chart_imgs|length < 4 %}
 {% for img_path in chart_imgs %}
 <figure class="chart-wrapper no-break" style="margin-top: 1.5rem;">
-  <img src="{{ img_path }}" alt="Chart" style="max-width: 100%; height: auto;">
+  <img src="{{ img_path }}" alt="Gráfico" style="max-width: 100%; height: auto;">
 </figure>
 {% endfor %}
 {% endif %}

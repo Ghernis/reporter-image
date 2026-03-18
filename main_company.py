@@ -51,23 +51,23 @@ def main() -> None:
     default_data = Path(__file__).parent / "data" / "example-licensing-by-company.json"
     if data_path:
         companies, licenses, company_data = load_company_data(data_path)
-        subtitle = "Top 10 licenses across companies"
+        subtitle = "Top 10 licencias por empresa"
     else:
         if not default_data.exists():
-            print("No data file. Run: python main_company.py /path/to/company-data.json", file=sys.stderr)
+            print("No hay archivo de datos. Ejecuta: python main_company.py /ruta/al/datos-empresa.json", file=sys.stderr)
             sys.exit(1)
         companies, licenses, company_data = load_company_data(default_data)
-        subtitle = "Top 10 licenses across companies (example data)"
+        subtitle = "Top 10 licencias por empresa (datos de ejemplo)"
 
     html_path, pdf_path = build_company_report(
         companies=companies,
         licenses=licenses,
         company_data=company_data,
-        title="Licenses by company",
+        title="Licencias por empresa",
         subtitle=subtitle,
         content=(
-            "<p>This report shows license consumption and movement by company: "
-            "stacked counts per license type, consumption % heatmap, assignments/removals, and scatter.</p>"
+            "<p>Este informe muestra el consumo de licencias y el movimiento por empresa: "
+            "cantidades apiladas por tipo de licencia, mapa de calor de % consumo, assignments/removals y dispersión.</p>"
         ),
         html_only=False,
     )

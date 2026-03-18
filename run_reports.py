@@ -120,7 +120,7 @@ def main() -> None:
     elif report_type == "activity":
         _run_activity(data_path)
     else:
-        print(f"Unknown report type: {report_type}. Use one of: {', '.join(REPORT_TYPES)}", file=sys.stderr)
+        print(f"Tipo de informe desconocido: {report_type}. Usa uno de: {', '.join(REPORT_TYPES)}", file=sys.stderr)
         sys.exit(1)
 
 

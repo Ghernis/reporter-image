@@ -36,25 +36,25 @@ def main() -> None:
     default_data = Path(__file__).parent / "data" / "example-activity-by-user.json"
     if data_path:
         buckets, activity_breakdown, top_low_score_users, cost = load_activity_data(data_path)
-        subtitle = "User activity and potential savings"
+        subtitle = "Actividad de usuarios y ahorro potencial"
     else:
         if not default_data.exists():
-            print("No data file. Run: python main_activity.py /path/to/activity-data.json", file=sys.stderr)
+            print("No hay archivo de datos. Ejecuta: python main_activity.py /ruta/al/datos-actividad.json", file=sys.stderr)
             sys.exit(1)
         buckets, activity_breakdown, top_low_score_users, cost = load_activity_data(default_data)
-        subtitle = "User activity (example data)"
+        subtitle = "Actividad de usuarios (datos de ejemplo)"
 
     html_path, pdf_path = build_activity_report(
         buckets=buckets,
         activity_breakdown=activity_breakdown,
         top_low_score_users=top_low_score_users,
         cost_per_inactive_user_per_month=cost,
-        title="Activity per user (E5 / E3 / F3)",
+        title="Actividad por usuario (E5 / E3 / F3)",
         subtitle=subtitle,
         content=(
-            "<p>This report shows user activity for expensive licenses (E5, E3, F3): "
-            "active vs low usage vs inactive, potential savings from inactive users, "
-            "usage breakdown by activity type, and top users with lowest score.</p>"
+            "<p>Este informe muestra la actividad de usuarios para licencias costosas (E5, E3, F3): "
+            "activos vs bajo uso vs inactivos, ahorro potencial por usuarios inactivos, "
+            "desglose de uso por tipo de actividad y usuarios con menor puntuación.</p>"
         ),
         html_only=False,
     )

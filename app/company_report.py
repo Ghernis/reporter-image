@@ -52,7 +52,7 @@ def build_company_report(
     default_pdf = str(out_dir / "report_company.pdf")
     return build_report(
         title=title,
-        subtitle=subtitle or "Top 10 licenses across companies",
+        subtitle=subtitle or "Top 10 licencias por empresa",
         content=content,
         chart_imgs=chart_imgs,
         table_html=table_html,

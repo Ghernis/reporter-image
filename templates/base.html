@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ title | default('Report') }}</title>
+  <title>{{ title | default('Informe') }}</title>
   <link rel="stylesheet" href="/static/css/bulma.min.css">
   <link rel="stylesheet" href="/static/css/theme.css">
   <link rel="stylesheet" href="/static/css/print.css">
@@ -12,7 +12,7 @@
   <section class="hero is-primary">
     <div class="hero-body">
       <div class="container">
-        <h1 class="title is-1">{{ title | default('Report') }}</h1>
+        <h1 class="title is-1">{{ title | default('Informe') }}</h1>
         {% if subtitle %}
         <p class="subtitle is-4">{{ subtitle }}</p>
         {% endif %}
@@ -22,7 +22,7 @@
   </section>
 
   <p class="report-metadata">
-    Generado: {{ generated_date | default('—') }} — Source: {{ source | default('—') }} — From: {{ from_type | default('—') }}
+    Generado: {{ generated_date | default('—') }} — Origen: {{ source | default('—') }} — Tipo: {{ from_type | default('—') }}
   </p>
 
   <section class="section">
@@ -37,7 +37,7 @@
       {% if chart_imgs %}
       {% for img_path in chart_imgs %}
       <figure class="chart-wrapper no-break" style="margin-top: 1.5rem;">
-        <img src="{{ img_path }}" alt="Chart" style="max-width: 100%; height: auto;">
+        <img src="{{ img_path }}" alt="Gráfico" style="max-width: 100%; height: auto;">
       </figure>
       {% endfor %}
       {% endif %}

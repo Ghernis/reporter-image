@@ -57,24 +57,24 @@ def main() -> None:
     default_data = Path(__file__).parent / "data" / "example-sharepoint-by-company.json"
     if data_path:
         companies, company_data, trend_dates, trend_series = load_sharepoint_data(data_path)
-        subtitle = "Storage by company — billable, E5, archive"
+        subtitle = "Almacenamiento por empresa — facturable, E5, archive"
     else:
         if not default_data.exists():
-            print("No data file. Run: python main_sharepoint.py /path/to/sharepoint-data.json", file=sys.stderr)
+            print("No hay archivo de datos. Ejecuta: python main_sharepoint.py /ruta/al/datos-sharepoint.json", file=sys.stderr)
             sys.exit(1)
         companies, company_data, trend_dates, trend_series = load_sharepoint_data(default_data)
-        subtitle = "Storage by company (example data)"
+        subtitle = "Almacenamiento por empresa (datos de ejemplo)"
 
     html_path, pdf_path = build_sharepoint_report(
         companies=companies,
         company_data=company_data,
         trend_dates=trend_dates,
         trend_series=trend_series,
-        title="SharePoint drive usage by company",
+        title="Uso de almacenamiento SharePoint por empresa",
         subtitle=subtitle,
         content=(
-            "<p>This report shows SharePoint storage by company: stacked billable / E5 / archive, "
-            "efficiency and archive ratio, and trend over time.</p>"
+            "<p>Este informe muestra el almacenamiento SharePoint por empresa: facturable / E5 / archive apilados, "
+            "eficiencia y ratio de archivo, y evolución en el tiempo.</p>"
         ),
         html_only=False,
     )

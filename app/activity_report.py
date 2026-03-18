@@ -17,7 +17,7 @@ def build_activity_report(
     top_low_score_users: list[dict[str, Any]],
     cost_per_inactive_user_per_month: float,
     *,
-    title: str = "Activity per user (E5 / E3 / F3)",
+    title: str = "Actividad por usuario (E5 / E3 / F3)",
     subtitle: str | None = None,
     content: str | None = None,
     output_html_path: str | None = None,
@@ -41,7 +41,10 @@ def build_activity_report(
         build_activity_breakdown_barchart(activity_breakdown, out_dir / "activity_chart_breakdown.png"),
     ]
 
-    inactive_count = next((int(b["count"]) for b in buckets if "inactive" in b["label"].lower()), 0)
+    inactive_count = next(
+        (int(b["count"]) for b in buckets if "inactive" in b["label"].lower() or "inactivo" in b["label"].lower()),
+        0,
+    )
     potential_savings = inactive_count * cost_per_inactive_user_per_month
 
     extra = {
@@ -57,7 +60,7 @@ def build_activity_report(
     default_pdf = str(out_dir / "report_activity.pdf")
     return build_report(
         title=title,
-        subtitle=subtitle or "User activity and potential savings",
+        subtitle=subtitle or "Actividad de usuarios y ahorro potencial",
         content=content,
         chart_imgs=chart_imgs,
         table_html=None,

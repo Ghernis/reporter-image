@@ -54,7 +54,7 @@ def build_sharepoint_report(
     default_pdf = str(out_dir / "report_sharepoint.pdf")
     return build_report(
         title=title,
-        subtitle=subtitle or "Storage by company — billable, E5, archive",
+        subtitle=subtitle or "Almacenamiento por empresa — facturable, E5, archive",
         content=content,
         chart_imgs=chart_imgs,
         table_html=None,

@@ -5,28 +5,28 @@
 </div>
 
 {% if chart_imgs and chart_imgs|length >= 1 %}
-<h2 class="title is-4" style="margin-top: 2rem;">User activity (active, low usage, inactive)</h2>
+<h2 class="title is-4" style="margin-top: 2rem;">Actividad de usuarios (activos, bajo uso, inactivos)</h2>
 <figure class="chart-wrapper no-break" style="margin-top: 1rem;">
-  <img src="{{ chart_imgs[0] }}" alt="Activity buckets" style="max-width: 100%; height: auto;">
-  <figcaption style="margin-top: 0.5rem; font-size: 0.9rem;">Users on E5 / E3 / F3 by activity score.</figcaption>
+  <img src="{{ chart_imgs[0] }}" alt="Segmentos de actividad" style="max-width: 100%; height: auto;">
+  <figcaption style="margin-top: 0.5rem; font-size: 0.9rem;">Usuarios con E5 / E3 / F3 por puntuación de actividad.</figcaption>
 </figure>
 {% endif %}
 
 {% if potential_savings is defined and inactive_count is defined and cost_per_inactive_user_per_month is defined %}
-<h2 class="title is-4" style="margin-top: 2rem;">Potential monthly savings</h2>
+<h2 class="title is-4" style="margin-top: 2rem;">Ahorro mensual potencial</h2>
 <div class="box no-break" style="margin-top: 1rem; max-width: 24rem;">
   <table class="table is-narrow">
     <tbody>
       <tr>
-        <th>Inactive users</th>
+        <th>Usuarios inactivos</th>
         <td>{{ inactive_count }}</td>
       </tr>
       <tr>
-        <th>Cost per inactive user (monthly)</th>
+        <th>Coste por usuario inactivo (mensual)</th>
         <td>${{ cost_per_inactive_user_per_month | round(2) }}</td>
       </tr>
       <tr>
-        <th><strong>Potential monthly savings</strong></th>
+        <th><strong>Ahorro mensual potencial</strong></th>
         <td><strong>${{ potential_savings | round(2) }}</strong></td>
       </tr>
     </tbody>
@@ -35,23 +35,23 @@
 {% endif %}
 
 {% if chart_imgs and chart_imgs|length >= 2 %}
-<h2 class="title is-4" style="margin-top: 2rem;">Usage breakdown</h2>
+<h2 class="title is-4" style="margin-top: 2rem;">Desglose de uso</h2>
 <figure class="chart-wrapper no-break" style="margin-top: 1rem;">
-  <img src="{{ chart_imgs[1] }}" alt="Activity breakdown" style="max-width: 100%; height: auto;">
-  <figcaption style="margin-top: 0.5rem; font-size: 0.9rem;">Number of users with each activity type (e.g. mail, teams, SharePoint in last 30d).</figcaption>
+  <img src="{{ chart_imgs[1] }}" alt="Desglose de actividad" style="max-width: 100%; height: auto;">
+  <figcaption style="margin-top: 0.5rem; font-size: 0.9rem;">Número de usuarios por tipo de actividad (p. ej. correo, Teams, SharePoint en últimos 30d).</figcaption>
 </figure>
 {% endif %}
 
 {% if top_low_score_users %}
-<h2 class="title is-4" style="margin-top: 2rem;">Top 50 users with lowest score</h2>
+<h2 class="title is-4" style="margin-top: 2rem;">Top 50 usuarios con menor puntuación</h2>
 <div class="box no-break" style="margin-top: 1rem;">
   <table class="table is-striped is-narrow">
     <thead>
       <tr>
-        <th>User</th>
-        <th>Display name</th>
-        <th>Score</th>
-        <th>Days since last activity</th>
+        <th>Usuario</th>
+        <th>Nombre</th>
+        <th>Puntuación</th>
+        <th>Días desde última actividad</th>
       </tr>
     </thead>
     <tbody>
@@ -73,7 +73,7 @@
 {% if chart_imgs and chart_imgs|length < 2 %}
 {% for img_path in chart_imgs %}
 <figure class="chart-wrapper no-break" style="margin-top: 1.5rem;">
-  <img src="{{ img_path }}" alt="Chart" style="max-width: 100%; height: auto;">
+  <img src="{{ img_path }}" alt="Gráfico" style="max-width: 100%; height: auto;">
 </figure>
 {% endfor %}
 {% endif %}

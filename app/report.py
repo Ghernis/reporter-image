@@ -28,7 +28,7 @@ def _weasyprint_available() -> bool:
 
 
 def build_report(
-    title: str = "Report",
+    title: str = "Informe",
     subtitle: str | None = None,
     content: str | None = None,
     chart_imgs: list[str] | None = None,
@@ -56,8 +56,8 @@ def build_report(
         "chart_imgs": chart_imgs or [],
         "table_html": table_html,
         "generated_date": datetime.now().strftime("%Y-%m-%d"),
-        "source": "Database",
-        "from_type": "Automation",
+        "source": "Base de datos",
+        "from_type": "Automatización",
     }
     if extra_context:
         context.update(extra_context)
@@ -88,9 +88,9 @@ def build_report(
         pdf_written = pdf_path
     elif not html_only:
         print(
-            "PDF skipped (WeasyPrint needs Pango/GObject; not available on this system).\n"
-            "HTML written to:", html_path, "\n"
-            "To get PDF: run with Docker, or install Pango (e.g. MSYS2 on Windows).",
+            "PDF omitido (WeasyPrint requiere Pango/GObject; no disponible en este sistema).\n"
+            "HTML escrito en:", html_path, "\n"
+            "Para obtener PDF: ejecuta con Docker o instala Pango (p. ej. MSYS2 en Windows).",
             file=sys.stderr,
         )
 
@@ -110,16 +110,16 @@ def main() -> None:
 
         fig, ax = plt.subplots(figsize=(6, 4))
         ax.bar(["A", "B", "C"], [10, 20, 15])
-        ax.set_title("Sample chart")
+        ax.set_title("Gráfico de ejemplo")
         chart_path = Path(tempfile.gettempdir()) / "chart.png"
         fig.savefig(chart_path, bbox_inches="tight", dpi=100)
         plt.close()
         chart_imgs.append(f"file://{chart_path}")
 
     html_path, pdf_path = build_report(
-        title="Sample Report",
-        subtitle="Generated with WeasyPrint + Jinja2 + Bulma",
-        content="<p>This is a minimal report. Use <code>build_report()</code> with your own data, charts, and tables.</p>",
+        title="Informe de ejemplo",
+        subtitle="Generado con WeasyPrint + Jinja2 + Bulma",
+        content="<p>Este es un informe mínimo. Usa <code>build_report()</code> con tus propios datos, gráficos y tablas.</p>",
         chart_imgs=chart_imgs if chart_imgs else None,
     )
     print("HTML:", html_path)
