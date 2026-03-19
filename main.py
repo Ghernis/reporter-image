@@ -85,7 +85,7 @@ def main() -> None:
         top10, dates, series = load_licensing_data(data_path)
         subtitle = "Top 10 licencias — consumo y evolución"
         content = (
-            "<p>This report shows consumption of the top 10 licenses as a percentage of available. "
+            "<p>Este reporte muestra el consumo de las 10 licencias mas importantes como porcentaje disponible. "
             "Chart 1: current snapshot (bar). Chart 2: daily evolution.</p>"
         )
     else:
